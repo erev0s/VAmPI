@@ -39,7 +39,7 @@ For more details you can use a service like the [swagger editor](https://editor.
  - SQLi Injection
  - Unauthorized Password Change
  - Broken Object Level Authorization
- - Register as admin by passing the proper key value
+ - Mass Assignment
  - Excessive Data Exposure through debug endpoint
  - User and Password Enumeration
  - RegexDOS (Denial of Service)
