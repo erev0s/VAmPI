@@ -5,13 +5,7 @@ info:
   version: "0.1"
 servers:
 - url: /
-components:
-  securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      x-bearerInfoFunc: api_views.users.decode_token
+components: {}
 paths:
   /createdb:
     get:
@@ -145,8 +139,6 @@ paths:
     delete:
       tags:
       - users
-      security:
-      - bearerAuth: []
       summary: Deletes user by username (Only Admins)
       description: Deletes user by username (Only Admins)
       operationId: api_views.users.delete_user
@@ -171,8 +163,6 @@ paths:
     put:
       tags:
       - users
-      security:
-      - bearerAuth: []
       summary: Update users email
       description: Update a single users email
       operationId: api_views.users.update_email
@@ -207,8 +197,6 @@ paths:
     put:
       tags:
         - users
-      security:
-      - bearerAuth: []
       summary: Update users password
       description: Update users password
       operationId: api_views.users.update_password
@@ -253,8 +241,6 @@ paths:
     post:
       tags:
       - books
-      security:
-      - bearerAuth: []
       summary: Add new book
       description: Add new book
       operationId: api_views.books.add_new_book
@@ -284,8 +270,6 @@ paths:
     get:
       tags:
         - books
-      security:
-      - bearerAuth: []
       summary: Retrieves book by title along with secret
       description: Retrieves book by title along with secret. Only the owner may retrieve it
       operationId: api_views.books.get_by_title

@@ -2,7 +2,7 @@ import datetime
 import jwt
 from sqlalchemy.orm import relationship
 from config import db, vuln_app
-from app import vuln
+from app import vuln, alive
 from models.books_model import Book
 from random import randrange
 
@@ -28,7 +28,7 @@ class User(db.Model):
     def encode_auth_token(self, user_id):
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=3600),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=alive),
                 'iat': datetime.datetime.utcnow(),
                 'sub': user_id
             }

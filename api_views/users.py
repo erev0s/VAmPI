@@ -12,28 +12,22 @@ from app import vuln
 def error_message_helper(msg):
     return '{ "status": "fail", "message": "' + msg + '"}'
 
-def decode_token(token):
-    try:
-        return jwt.decode(token, vuln_app.app.config.get('SECRET_KEY'))
-    except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
-    except jwt.InvalidTokenError:
-        return 'Invalid token. Please log in again.'
 
 def get_all_users():
     return_value = jsonify({'users': User.get_all_users()})
     return return_value
 
+
 def debug():
     return_value = jsonify({'users': User.get_all_users_debug()})
     return return_value
+
 
 def get_by_username(username):
     if User.get_user(username):
         return Response(str(User.get_user(username)), 200, mimetype="application/json")
     else:
         return Response(error_message_helper("User not found"), 404, mimetype="application/json")
-
 
 
 def register_user():
@@ -132,7 +126,6 @@ def update_email(username):
                 r"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@{1}([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$",
                 str(request_data.get('email')))
             if match:
-                print(request_data)
                 user.email = request_data.get('email')
                 db.session.commit()
                 responseObject = {
