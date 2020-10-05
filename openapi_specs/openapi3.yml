@@ -11,6 +11,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      x-bearerInfoFunc: api_views.users.decode_token
 paths:
   /createdb:
     get:

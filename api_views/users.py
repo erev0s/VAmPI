@@ -1,6 +1,8 @@
 import re
 import jsonschema
-from config import db
+import jwt
+
+from config import db, vuln_app
 from api_views.json_schemas import *
 from flask import jsonify, Response, request, json
 from models.user_model import User
@@ -10,6 +12,13 @@ from app import vuln
 def error_message_helper(msg):
     return '{ "status": "fail", "message": "' + msg + '"}'
 
+def decode_token(token):
+    try:
+        return jwt.decode(token, vuln_app.app.config.get('SECRET_KEY'))
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
 
 def get_all_users():
     return_value = jsonify({'users': User.get_all_users()})

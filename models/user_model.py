@@ -71,7 +71,7 @@ class User(db.Model):
             query = db.session.execute(user_query)
             ret = query.fetchone()
             if ret:
-                fin_query = '{"username": "%s", "email": "%s"}' % (ret[0], ret[2])
+                fin_query = '{"username": "%s", "email": "%s"}' % (ret[1], ret[3])
             else:
                 fin_query = None
         else:

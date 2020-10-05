@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "582821ef-43bf-4ab2-baa9-16ec29492e3b",
+		"_postman_id": "ef9f42fc-526e-4c9f-9680-a44711ac26a2",
 		"name": "VAmPI",
 		"description": "OpenAPI v3 specs for VAmPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -39,6 +39,40 @@
 							},
 							"response": [
 								{
+									"name": "Successfully display user info",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/v1/:username",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"v1",
+												":username"
+											],
+											"variable": [
+												{
+													"key": "username"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n {\n  \"username\": \"et cupidatat\",\n  \"email\": \"labore\"\n },\n {\n  \"username\": \"incididunt elit mollit\",\n  \"email\": \"dolor dolor id\"\n }\n]"
+								},
+								{
 									"name": "User not found",
 									"originalRequest": {
 										"method": "GET",
@@ -71,40 +105,6 @@
 									],
 									"cookie": [],
 									"body": ""
-								},
-								{
-									"name": "Successfully display user info",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"users",
-												"v1",
-												":username"
-											],
-											"variable": [
-												{
-													"key": "username"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "[\n {\n  \"username\": \"pariatur enim consequat\",\n  \"email\": \"mollit\"\n },\n {\n  \"username\": \"voluptate Duis consectetur aliqua\",\n  \"email\": \"magna s\"\n }\n]"
 								}
 							]
 						},
@@ -145,7 +145,7 @@
 							},
 							"response": [
 								{
-									"name": "Sucessfully deleted user",
+									"name": "User not authorized",
 									"originalRequest": {
 										"method": "DELETE",
 										"header": [
@@ -175,8 +175,8 @@
 											]
 										}
 									},
-									"status": "No Content",
-									"code": 204,
+									"status": "Unauthorized",
+									"code": 401,
 									"_postman_previewlanguage": "text",
 									"header": [
 										{
@@ -231,7 +231,7 @@
 									"body": ""
 								},
 								{
-									"name": "User not authorized",
+									"name": "Sucessfully deleted user",
 									"originalRequest": {
 										"method": "DELETE",
 										"header": [
@@ -261,8 +261,8 @@
 											]
 										}
 									},
-									"status": "Unauthorized",
-									"code": 401,
+									"status": "No Content",
+									"code": 204,
 									"_postman_previewlanguage": "text",
 									"header": [
 										{
@@ -322,54 +322,6 @@
 							},
 							"response": [
 								{
-									"name": "Sucessfully updated user email",
-									"originalRequest": {
-										"method": "PUT",
-										"header": [
-											{
-												"description": {
-													"content": "Added as a part of security scheme: bearer",
-													"type": "text/plain"
-												},
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"<string>\"\n}"
-										},
-										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/email",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"users",
-												"v1",
-												":username",
-												"email"
-											],
-											"variable": [
-												{
-													"key": "username"
-												}
-											]
-										}
-									},
-									"status": "No Content",
-									"code": 204,
-									"_postman_previewlanguage": "text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								},
-								{
 									"name": "Invalid request",
 									"originalRequest": {
 										"method": "PUT",
@@ -455,6 +407,54 @@
 									},
 									"status": "Unauthorized",
 									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Sucessfully updated user email",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"description": {
+													"content": "Added as a part of security scheme: bearer",
+													"type": "text/plain"
+												},
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/v1/:username/email",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"v1",
+												":username",
+												"email"
+											],
+											"variable": [
+												{
+													"key": "username"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
 									"_postman_previewlanguage": "text",
 									"header": [
 										{
@@ -514,6 +514,54 @@
 							},
 							"response": [
 								{
+									"name": "Sucessfully updated users password",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"description": {
+													"content": "Added as a part of security scheme: bearer",
+													"type": "text/plain"
+												},
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"password\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/v1/:username/password",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"v1",
+												":username",
+												"password"
+											],
+											"variable": [
+												{
+													"key": "username"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
 									"name": "User not authorized",
 									"originalRequest": {
 										"method": "PUT",
@@ -599,54 +647,6 @@
 									},
 									"status": "Bad Request",
 									"code": 400,
-									"_postman_previewlanguage": "text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								},
-								{
-									"name": "Sucessfully updated users password",
-									"originalRequest": {
-										"method": "PUT",
-										"header": [
-											{
-												"description": {
-													"content": "Added as a part of security scheme: bearer",
-													"type": "text/plain"
-												},
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"password\": \"<string>\"\n}"
-										},
-										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/password",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"users",
-												"v1",
-												":username",
-												"password"
-											],
-											"variable": [
-												{
-													"key": "username"
-												}
-											]
-										}
-									},
-									"status": "No Content",
-									"code": 204,
 									"_postman_previewlanguage": "text",
 									"header": [
 										{
@@ -790,39 +790,6 @@
 					},
 					"response": [
 						{
-							"name": "Invalid request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/register",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"register"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
 							"name": "Sucessfully created user",
 							"originalRequest": {
 								"method": "POST",
@@ -845,6 +812,39 @@
 							},
 							"status": "OK",
 							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Invalid request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -886,39 +886,6 @@
 					},
 					"response": [
 						{
-							"name": "Sucessfully logged in user",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"login"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
 							"name": "Invalid request",
 							"originalRequest": {
 								"method": "POST",
@@ -941,6 +908,39 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Sucessfully logged in user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -1086,47 +1086,6 @@
 							"body": ""
 						},
 						{
-							"name": "User not authorized",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"description": {
-											"content": "Added as a part of security scheme: bearer",
-											"type": "text/plain"
-										},
-										"key": "Authorization",
-										"value": "Bearer <token>"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/books/v1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1"
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
 							"name": "Sucessfully added a book",
 							"originalRequest": {
 								"method": "POST",
@@ -1157,6 +1116,47 @@
 							},
 							"status": "OK",
 							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "User not authorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": {
+											"content": "Added as a part of security scheme: bearer",
+											"type": "text/plain"
+										},
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/books/v1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										"v1"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -1332,7 +1332,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "[\n {\n  \"book_title\": \"incididunt fugiat dolore adipisicing\",\n  \"secret\": \"adipisicing incididunt\",\n  \"owner\": \"in minim dolor quis\"\n },\n {\n  \"book_title\": \"velit id e\",\n  \"secret\": \"labore nulla\",\n  \"owner\": \"cillum nisi officia dolor in\"\n }\n]"
+							"body": "[\n {\n  \"book_title\": \"occaecat\",\n  \"secret\": \"laboris et nisi\",\n  \"owner\": \"sunt laboris\"\n },\n {\n  \"book_title\": \"cillum\",\n  \"secret\": \"Ut in non amet exercitation\",\n  \"owner\": \"amet qui aliquip\"\n }\n]"
 						}
 					]
 				}
