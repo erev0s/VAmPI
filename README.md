@@ -67,3 +67,4 @@ docker run -d -p 5000:5000 vampi_docker:latest
 
 
  [Picture from freepik - www.freepik.com](https://www.freepik.com/vectors/party)
+<meta name="google-site-verification" content="qzlURYdhjpNyDdFTFsOXNgL6UC8uKZ5BNHb14C5rDwk" />
