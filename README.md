@@ -1,4 +1,3 @@
-<meta name="google-site-verification" content="qzlURYdhjpNyDdFTFsOXNgL6UC8uKZ5BNHb14C5rDwk" />
 # VAmPI
 **The Vulnerable API** *(Based on OpenAPI 3)*
 ![vampi](https://i.imgur.com/zR0quKf.jpg)
