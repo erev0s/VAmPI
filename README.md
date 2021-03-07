@@ -66,5 +66,11 @@ docker run -d -p 5000:5000 vampi_docker:latest
 
 
 
+## Customizing token timeout and vulnerable environment or not
+If you would like to alter the timeout of the token created after login or if you want to change the environment **not** to be vulnerable then you can do that in two ways depending how you run the application.
+
+ - If you run it like normal with `python3 app.py` then all you have to do is edit the `alive` and `vuln` variables defined in the `app.py` itself. The `alive` variable is measured in seconds, so if you put `100`, then the token expires after 100 seconds. The `vuln` variable is like boolean, if you set it to `1` then the application is vulnerable, and if you set it to `0` the application is not vulnerable.
+ - If you run it through docker, then you must edit the `Dockerfile`. In there you will find two environment variables being set, the `ENV vulnerable=1` and the `ENV tokentimetolive=60`. Feel free to change it before running the docker build command.
+
  [Picture from freepik - www.freepik.com](https://www.freepik.com/vectors/party)
 
