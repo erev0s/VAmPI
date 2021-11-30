@@ -1,7 +1,7 @@
 FROM python:3.7-alpine
 
 RUN mkdir /vampi
-RUN apk --update add bash nano
+RUN apk --update add bash nano g++
 
 ENV vulnerable=1
 ENV tokentimetolive=60
