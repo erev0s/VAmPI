@@ -1,8 +1,11 @@
+# Assumptions
+
+* You've started VAmPI securely (vulnerable=0) on port 5001 and insecurely (vulnerable=1) on port 5002.
+
 # Handy shortcuts
 
 Grab the auth token more easily:
 `http :5002/books/v1/bookTitle97 Authorization:"Bearer $(http :5001/users/v1/login username=admin password=pass1|jq -r .auth_token)"`
-
 
 
 ## Teaching & Learning notes
