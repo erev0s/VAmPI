@@ -51,7 +51,7 @@ For more details you can use a service like the [swagger editor](https://editor.
 It is a Flask application so in order to run it you can install all requirements and then run the `app.py`.
 To install all requirements simply run `pip3 install -r requirements.txt` and then `python3 app.py`.
 
-Or if you prefer you can also run it through docker.
+Or if you prefer you can also run it through docker or docker compose.
 
  #### Run it through Docker
 
@@ -65,6 +65,12 @@ docker run -d -p 5000:5000 vampi_docker:latest
  ~~~~
 
 [Note: if you run Docker on newer versions of the MacOS, use `-p 5001:5000` to avoid conflicting with the AirPlay Receiver service. Alternatively, you could disable the AirPlay Receiver service in your System Preferences -> Sharing settings.]
+
+  #### Run it through Docker Compose
+Assuming you've built the container per the above steps, run one instance securely (port 5001) and another insecurely (port 5002):
+~~~~
+docker compose up -d
+~~~~
 
 ## Customizing token timeout and vulnerable environment or not
 If you would like to alter the timeout of the token created after login or if you want to change the environment **not** to be vulnerable then you can use a few ways depending how you run the application.
