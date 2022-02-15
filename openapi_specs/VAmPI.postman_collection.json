@@ -18,9 +18,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
+									"raw": "192.168.1.8:5000/users/v1/:username",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -44,9 +44,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username",
+											"raw": "192.168.1.8:5000/users/v1/:username",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -78,9 +78,9 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username",
+											"raw": "192.168.1.8:5000/users/v1/:username",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -124,9 +124,9 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
+									"raw": "192.168.1.8:5000/users/v1/:username",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -159,9 +159,9 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username",
+											"raw": "192.168.1.8:5000/users/v1/:username",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -202,9 +202,9 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username",
+											"raw": "192.168.1.8:5000/users/v1/:username",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -245,9 +245,9 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username",
+											"raw": "192.168.1.8:5000/users/v1/:username",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -300,9 +300,9 @@
 									"raw": "{\n    \"email\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/email",
+									"raw": "192.168.1.8:5000/users/v1/:username/email",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -340,9 +340,9 @@
 											"raw": "{\n    \"email\": \"<string>\"\n}"
 										},
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/email",
+											"raw": "192.168.1.8:5000/users/v1/:username/email",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -388,9 +388,9 @@
 											"raw": "{\n    \"email\": \"<string>\"\n}"
 										},
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/email",
+											"raw": "192.168.1.8:5000/users/v1/:username/email",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -436,9 +436,9 @@
 											"raw": "{\n    \"email\": \"<string>\"\n}"
 										},
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/email",
+											"raw": "192.168.1.8:5000/users/v1/:username/email",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -492,9 +492,9 @@
 									"raw": "{\n    \"password\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/password",
+									"raw": "192.168.1.8:5000/users/v1/:username/password",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -532,9 +532,9 @@
 											"raw": "{\n    \"password\": \"<string>\"\n}"
 										},
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/password",
+											"raw": "192.168.1.8:5000/users/v1/:username/password",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -580,9 +580,9 @@
 											"raw": "{\n    \"password\": \"<string>\"\n}"
 										},
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/password",
+											"raw": "192.168.1.8:5000/users/v1/:username/password",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -628,9 +628,9 @@
 											"raw": "{\n    \"password\": \"<string>\"\n}"
 										},
 										"url": {
-											"raw": "{{baseUrl}}/users/v1/:username/password",
+											"raw": "192.168.1.8:5000/users/v1/:username/password",
 											"host": [
-												"{{baseUrl}}"
+												"192.168.1.8:5000"
 											],
 											"path": [
 												"users",
@@ -669,9 +669,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/v1",
+							"raw": "192.168.1.8:5000/users/v1",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"users",
@@ -687,9 +687,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/users/v1",
+									"raw": "192.168.1.8:5000/users/v1",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -717,9 +717,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/v1/_debug",
+							"raw": "192.168.1.8:5000/users/v1/_debug",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"users",
@@ -736,9 +736,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/_debug",
+									"raw": "192.168.1.8:5000/users/v1/_debug",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -776,9 +776,9 @@
 							"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/v1/register",
+							"raw": "192.168.1.8:5000/users/v1/register",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"users",
@@ -799,9 +799,9 @@
 									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/register",
+									"raw": "192.168.1.8:5000/users/v1/register",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -832,9 +832,9 @@
 									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/register",
+									"raw": "192.168.1.8:5000/users/v1/register",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -872,9 +872,9 @@
 							"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/v1/login",
+							"raw": "192.168.1.8:5000/users/v1/login",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"users",
@@ -895,9 +895,9 @@
 									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/login",
+									"raw": "192.168.1.8:5000/users/v1/login",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -928,9 +928,9 @@
 									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/users/v1/login",
+									"raw": "192.168.1.8:5000/users/v1/login",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"users",
@@ -965,9 +965,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/books/v1",
+							"raw": "192.168.1.8:5000/books/v1",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"books",
@@ -983,9 +983,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/books/v1",
+									"raw": "192.168.1.8:5000/books/v1",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1032,9 +1032,9 @@
 							"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/books/v1",
+							"raw": "192.168.1.8:5000/books/v1",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"books",
@@ -1063,9 +1063,9 @@
 									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/books/v1",
+									"raw": "192.168.1.8:5000/books/v1",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1104,9 +1104,9 @@
 									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/books/v1",
+									"raw": "192.168.1.8:5000/books/v1",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1145,9 +1145,9 @@
 									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
 								},
 								"url": {
-									"raw": "{{baseUrl}}/books/v1",
+									"raw": "192.168.1.8:5000/books/v1",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1185,9 +1185,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/books/v1/:book",
+							"raw": "192.168.1.8:5000/books/v1/:book",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"books",
@@ -1220,9 +1220,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/books/v1/:book",
+									"raw": "192.168.1.8:5000/books/v1/:book",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1263,9 +1263,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/books/v1/:book",
+									"raw": "192.168.1.8:5000/books/v1/:book",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1306,9 +1306,9 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/books/v1/:book",
+									"raw": "192.168.1.8:5000/books/v1/:book",
 									"host": [
-										"{{baseUrl}}"
+										"192.168.1.8:5000"
 									],
 									"path": [
 										"books",
@@ -1345,9 +1345,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/createdb",
+					"raw": "192.168.1.8:5000/createdb",
 					"host": [
-						"{{baseUrl}}"
+						"192.168.1.8:5000"
 					],
 					"path": [
 						"createdb"
@@ -1362,9 +1362,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/createdb",
+							"raw": "192.168.1.8:5000/createdb",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								"createdb"
@@ -1391,9 +1391,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/",
+					"raw": "192.168.1.8:5000/",
 					"host": [
-						"{{baseUrl}}"
+						"192.168.1.8:5000"
 					],
 					"path": [
 						""
@@ -1408,9 +1408,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/",
+							"raw": "192.168.1.8:5000/",
 							"host": [
-								"{{baseUrl}}"
+								"192.168.1.8:5000"
 							],
 							"path": [
 								""
