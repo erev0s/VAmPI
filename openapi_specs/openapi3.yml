@@ -2,59 +2,101 @@ openapi: 3.0.1
 info:
   title: VAmPI
   description: OpenAPI v3 specs for VAmPI
-  version: "0.1"
+  version: '0.1'
 servers:
-- url: /
+  - url: http://localhost:5000
 components: {}
 paths:
   /createdb:
     get:
       tags:
-      - db-init
+        - db-init
       summary: Creates and populates the database with dummy data
       description: Creates and populates the database with dummy data
       operationId: api_views.main.populate_db
       responses:
-        200:
+        '200':
           description: Creates and populates the database with dummy data
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   /:
     get:
       tags:
-      - home
+        - home
       summary: VAmPI home
-      description: VAmPI is a vulnerable on purpose API. It was created in order to evaluate the efficiency of third party tools in identifying vulnerabilities in APIs but it can also be used in learning/teaching purposes.
+      description: >-
+        VAmPI is a vulnerable on purpose API. It was created in order to
+        evaluate the efficiency of third party tools in identifying
+        vulnerabilities in APIs but it can also be used in learning/teaching
+        purposes.
       operationId: api_views.main.basic
       responses:
-        200:
+        '200':
           description: Home - Help
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  Help:
+                    type: string
   /users/v1:
     get:
       tags:
-      - users
+        - users
       summary: Retrieves all users
       description: Displays all users with basic information
       operationId: api_views.users.get_all_users
       responses:
-        200:
+        '200':
           description: See basic info about all users
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    username:
+                      type: string
   /users/v1/_debug:
     get:
       tags:
-      - users
+        - users
       summary: Retrieves all details for all users
       description: Displays all details for all users
       operationId: api_views.users.debug
       responses:
-        200:
+        '200':
           description: See all details of the users
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    admin:
+                      type: boolean
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    username:
+                      type: string
   /users/v1/register:
     post:
       tags:
-      - users
+        - users
       summary: Register new user
       description: Register new user
       operationId: api_views.users.register_user
@@ -73,16 +115,25 @@ paths:
                   type: string
         required: true
       responses:
-        200:
+        '200':
           description: Sucessfully created user
-          content: {}
-        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                    enum: ['success', 'fail']
+        '400':
           description: Invalid request
           content: {}
   /users/v1/login:
     post:
       tags:
-      - users
+        - users
       summary: Login to VAmPI
       description: Login to VAmPI
       operationId: api_views.users.login_user
@@ -99,12 +150,32 @@ paths:
                   type: string
         required: true
       responses:
-        200:
+        '200':
           description: Sucessfully logged in user
-          content: {}
-        400:
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    auth_token:
+                      type: string
+                    message:
+                      type: string
+                    status:
+                      type: string
+                      enum: ['success', 'fail']
+        '400':
           description: Invalid request
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
   /users/v1/{username}:
     get:
       tags:
@@ -120,7 +191,7 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: Successfully display user info
           content:
             application/json:
@@ -133,46 +204,74 @@ paths:
                       type: string
                     email:
                       type: string
-        404:
+        '404':
           description: User not found
-          content: { }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
+
     delete:
       tags:
-      - users
+        - users
       summary: Deletes user by username (Only Admins)
       description: Deletes user by username (Only Admins)
       operationId: api_views.users.delete_user
       parameters:
-      - name: username
-        in: path
-        description: Delete username
-        required: true
-        schema:
-          type: string
+        - name: username
+          in: path
+          description: Delete username
+          required: true
+          schema:
+            type: string
       responses:
-        204:
+        '200':
           description: Sucessfully deleted user
-          content: {}
-        401:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                    enum: ['success', 'fail']
+        '401':
           description: User not authorized
-          content: {}
-        404:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
+        '404':
           description: User not found
           content: {}
   /users/v1/{username}/email:
     put:
       tags:
-      - users
+        - users
       summary: Update users email
       description: Update a single users email
       operationId: api_views.users.update_email
       parameters:
-      - name: username
-        in: path
-        description: username to update email
-        required: true
-        schema:
-          type: string
+        - name: username
+          in: path
+          description: username to update email
+          required: true
+          schema:
+            type: string
       requestBody:
         description: field to update
         content:
@@ -184,15 +283,24 @@ paths:
                   type: string
         required: true
       responses:
-        204:
+        '204':
           description: Sucessfully updated user email
           content: {}
-        400:
+        '400':
           description: Invalid request
           content: {}
-        401:
+        '401':
           description: User not authorized
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
   /users/v1/{username}/password:
     put:
       tags:
@@ -218,34 +326,58 @@ paths:
                   type: string
         required: true
       responses:
-        204:
+        '204':
           description: Sucessfully updated users password
-          content: { }
-        400:
-          description: Invalid request
-          content: { }
-        401:
-          description: User not authorized
           content: {}
+        '400':
+          description: Invalid request
+          content: {}
+        '401':
+          description: User not authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
   /books/v1:
     get:
       tags:
-      - books
+        - books
       summary: Retrieves all books
       description: Retrieves all books
       operationId: api_views.books.get_all_books
       responses:
-        200:
+        '200':
           description: See all books
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Books:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        book_title:
+                          type: string
+                        user:
+                          type: string
     post:
       tags:
-      - books
+        - books
       summary: Add new book
       description: Add new book
       operationId: api_views.books.add_new_book
       requestBody:
-        description: Add new book with title and secret content only available to the user who added it.
+        description: >-
+          Add new book with title and secret content only available to the user
+          who added it.
         content:
           application/json:
             schema:
@@ -257,31 +389,51 @@ paths:
                   type: string
         required: true
       responses:
-        200:
+        '200':
           description: Sucessfully added a book
-          content: {}
-        400:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                    enum: ['success', 'fail']
+        '400':
           description: Invalid request
           content: {}
-        401:
+        '401':
           description: User not authorized
-          content: {}
-  /books/v1/{book}:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
+  /books/v1/{book_title}:
     get:
       tags:
         - books
       summary: Retrieves book by title along with secret
-      description: Retrieves book by title along with secret. Only the owner may retrieve it
+      description: >-
+        Retrieves book by title along with secret. Only the owner may retrieve
+        it
       operationId: api_views.books.get_by_title
       parameters:
-        - name: book
+        - name: book_title
           in: path
           description: retrieve book data
           required: true
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: Successfully retrieve book info
           content:
             application/json:
@@ -292,13 +444,32 @@ paths:
                   properties:
                     book_title:
                       type: string
-                    secret:
-                      type: string
                     owner:
                       type: string
-        404:
-          description: Book not found
-          content: { }
-        401:
+                    secret:
+                      type: string
+        '401':
           description: User not authorized
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                  message:
+                    type: string
+
