@@ -39,7 +39,7 @@ def register_user():
             # validate the data are in the correct form
             jsonschema.validate(request_data, register_user_schema)
             if vuln and 'admin' in request_data:  # User is possible to define if she/he wants to be an admin !!
-                if request_data['admin'] == "True":
+                if request_data['admin']:
                     admin = True
                 else:
                     admin = False
