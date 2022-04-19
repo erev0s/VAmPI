@@ -11,10 +11,11 @@ class Book(db.Model):
 
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
     user = relationship("User", back_populates="books")
-    
-    def __init__(self, book_title, secret_content):
+
+    def __init__(self, book_title, secret_content, user_id=user_id):
         self.book_title = book_title
         self.secret_content = secret_content
+        self.user_id = user_id
 
     def __repr__(self):
         return f"<User(book_title={self.book_title}, user={self.user})>"
@@ -25,4 +26,3 @@ class Book(db.Model):
     @staticmethod
     def get_all_books():
         return [Book.json(user) for user in Book.query.all()]
-
