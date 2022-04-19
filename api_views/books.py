@@ -37,7 +37,9 @@ def add_new_book():
         if book:
             return Response(error_message_helper("Book Already exists!"), 400, mimetype="application/json")
         else:
-            user.books = [Book(book_title=request_data.get('book_title'), secret_content=request_data.get('secret'))]
+            newBook = Book(book_title=request_data.get('book_title'), secret_content=request_data.get('secret'),
+                           user_id=user.id)
+            db.session.add(newBook)
             db.session.commit()
             responseObject = {
                 'status': 'success',
