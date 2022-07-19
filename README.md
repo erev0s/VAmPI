@@ -10,7 +10,7 @@ VAmPI is a vulnerable API made with Flask and it includes vulnerabilities from t
  - Based on OWASP Top 10 vulnerabilities for APIs.
  - OpenAPI3 specs and Postman Collection included.
  - Global switch on/off to have a vulnerable environment or not.
- - Token-Based Authentication (Adjust lifetime from within app.py)
+ - Token-Based Authentication (See Customizing token timeout section)
 
 VAmPI's flow of actions is going like this: an unregistered user can see minimal information about the dummy users included in the API. A user can register and then login to be allowed using the token received during login to post a book. For a book posted the data accepted are the title and a secret about that book. Each book is unique for every user and only the owner of the book should be allowed to view the secret.
 
