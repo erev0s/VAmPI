@@ -1,7 +1,7 @@
 version: "3"
 services:
  vampi-secure:
-  image: vampi_docker:latest
+  build: ./
   container_name: vampi-secure
   ports:
    - 5001:5000
@@ -9,7 +9,7 @@ services:
    - vulnerable=0
 
  vampi-vulnerable:
-  image: vampi_docker:latest
+  build: ./
   container_name: vampi-vulnerable
   ports:
    - 5002:5000
