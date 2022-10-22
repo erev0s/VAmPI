@@ -72,7 +72,18 @@ Assuming you've built the container per the above steps, run one instance secure
 docker compose up -d
 ~~~~
 
+#### Run it in Kubernetes
+
+Assuming you have access to a Kubernetes cluster and kubectl connected to it:
+
+```
+kubectl apply -f vampi-secure-deployment.yaml,vampi-secure-service.yaml,vampi-vulnerable-deployment.yaml,vampi-vulnerable-service.yaml
+```
+
+ will deploy it and LoadBalancers for you.
+
 ## Customizing token timeout and vulnerable environment or not
+
 If you would like to alter the timeout of the token created after login or if you want to change the environment **not** to be vulnerable then you can use a few ways depending how you run the application.
 
  - If you run it like normal with `python3 app.py` then all you have to do is edit the `alive` and `vuln` variables defined in the `app.py` itself. The `alive` variable is measured in seconds, so if you put `100`, then the token expires after 100 seconds. The `vuln` variable is like boolean, if you set it to `1` then the application is vulnerable, and if you set it to `0` the application is not vulnerable.
