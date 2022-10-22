@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: vampi-vulnerable
+  name: vampi-vulnerable
+spec:
+  ports:
+    - name: "5002"
+      port: 5002
+      targetPort: 5000
+  type: LoadBalancer
+  selector:
+    io.kompose.service: vampi-vulnerable
+status:
+  loadBalancer: {}

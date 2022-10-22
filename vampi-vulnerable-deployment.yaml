@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: vampi-vulnerable
+  name: vampi-vulnerable
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: vampi-vulnerable
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: vampi-vulnerable
+    spec:
+      containers:
+        - env:
+            - name: vulnerable
+              value: "1"
+          image: saltaaron/vampi:latest
+          name: vampi-vulnerable
+          ports:
+            - containerPort: 5000
+          resources: {}
+      restartPolicy: Always
+status: {}
