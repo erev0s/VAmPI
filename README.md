@@ -80,7 +80,7 @@ Assuming you have access to a Kubernetes cluster and kubectl connected to it:
 kubectl apply -f vampi-secure-deployment.yaml,vampi-secure-service.yaml,vampi-vulnerable-deployment.yaml,vampi-vulnerable-service.yaml
 ```
 
- will deploy it and LoadBalancers for you.
+ will deploy two instances and two LoadBalancers for you.
 
 ## Customizing token timeout and vulnerable environment or not
 
