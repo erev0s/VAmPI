@@ -72,7 +72,14 @@ docker run -d -p 5000:5000 vampi_docker:latest
 docker-compose up -d
 ~~~~
 
+## Using it with Postman
+
+Included in the `openapi_specs` directory is a Postman Collection and two Postman environments, one secure and one vulnerable. To use them, import the three files into a Postman Workspace. Then, after choosing one of the environments, either run the requests individually or using the Postman Runner, run them as a batch. Tests are included.
+
+Note: if you're not running VAmPI on localhost or on ports other than 5001 (secure) and 5002 (vulnerable) you should adjust the `VampiHost` variable in each environment's settings accordingly. 
+
 ## Customizing token timeout and vulnerable environment or not
+
 If you would like to alter the timeout of the token created after login or if you want to change the environment **not** to be vulnerable then you can use a few ways depending how you run the application.
 
  - If you run it like normal with `python3 app.py` then all you have to do is edit the `alive` and `vuln` variables defined in the `app.py` itself. The `alive` variable is measured in seconds, so if you put `100`, then the token expires after 100 seconds. The `vuln` variable is like boolean, if you set it to `1` then the application is vulnerable, and if you set it to `0` the application is not vulnerable.

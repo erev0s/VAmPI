@@ -1,1389 +1,2057 @@
 {
-	"info": {
-		"_postman_id": "185f7c1b-5531-42b2-8799-8d34538da804",
-		"name": "VAmPI",
-		"description": "OpenAPI v3 specs for VAmPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "User Generic",
-			"item": [
-				{
-					"name": "Register new user",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/register",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								"register"
-							]
-						},
-						"description": "Register new user"
-					},
-					"response": [
-						{
-							"name": "Sucessfully created user",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/register",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"register"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"message\": \"exercitation dolor aliqua\",\n \"status\": \"fail\"\n}"
-						},
-						{
-							"name": "Invalid request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/register",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"register"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
-					"name": "Login to VAmPI",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const body = pm.response.stream.toString('utf-8');",
-									"const responseAsJson = JSON.parse(body)",
-									"pm.collectionVariables.set(\"auth_token\", responseAsJson.auth_token)"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								"login"
-							]
-						},
-						"description": "Login to VAmPI"
-					},
-					"response": [
-						{
-							"name": "Sucessfully logged in user",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"login"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"auth_token\": \"Lorem dolor\",\n \"message\": \"proident officia Duis cupidatat sint\",\n \"status\": \"fail\"\n}"
-						},
-						{
-							"name": "Invalid request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"login"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Retrieves all users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/users/v1",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1"
-							]
-						},
-						"description": "Displays all users with basic information"
-					},
-					"response": [
-						{
-							"name": "See basic info about all users",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n {\n  \"email\": \"dolore\",\n  \"username\": \"labore tempor ea Duis\"\n },\n {\n  \"email\": \"aliqua\",\n  \"username\": \"Excepte\"\n }\n]"
-						}
-					]
-				},
-				{
-					"name": "Retrieves all details for all users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/_debug",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								"_debug"
-							]
-						},
-						"description": "Displays all details for all users - debug endpoint!"
-					},
-					"response": [
-						{
-							"name": "See all details of the users",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/_debug",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										"_debug"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n {\n  \"admin\": false,\n  \"email\": \"nostrud non commodo pariatur\",\n  \"password\": \"officia in adipisicing ad\",\n  \"username\": \"amet nostrud laborum do dolor\"\n },\n {\n  \"admin\": false,\n  \"email\": \"dolor\",\n  \"password\": \"sunt\",\n  \"username\": \"mollit\"\n }\n]"
-						}
-					]
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "User Specific",
-			"item": [
-				{
-					"name": "Retrieves user by username",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/:username",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) retrieve username data"
-								}
-							]
-						},
-						"description": "Displays user by username"
-					},
-					"response": [
-						{
-							"name": "Successfully display user info",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n {\n  \"username\": \"eu in deserunt ullamco sint\",\n  \"email\": \"Duis do occaecat aute\"\n },\n {\n  \"username\": \"sit esse\",\n  \"email\": \"consequat\"\n }\n]"
-						},
-						{
-							"name": "User not found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Deletes user by username (Only Admins)",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/:username",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) Delete username"
-								}
-							]
-						},
-						"description": "Deletes user by username (Only Admins)"
-					},
-					"response": [
-						{
-							"name": "Sucessfully deleted user",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"message\": \"exercitation dolor aliqua\",\n \"status\": \"fail\"\n}"
-						},
-						{
-							"name": "User not authorized",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						},
-						{
-							"name": "User not found",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
-					"name": "Update users email (Requires Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{auth_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"<string>\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/:username/email",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								":username",
-								"email"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) username to update email"
-								}
-							]
-						},
-						"description": "Update a single users email"
-					},
-					"response": [
-						{
-							"name": "User not authorized",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/email",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username",
-										"email"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						},
-						{
-							"name": "Invalid request",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/email",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username",
-										"email"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Sucessfully updated user email",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/email",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username",
-										"email"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "No Content",
-							"code": 204,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
-					"name": "Update users password (Requires Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{auth_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"password\": \"<string>\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/users/v1/:username/password",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"v1",
-								":username",
-								"password"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "<string>",
-									"description": "(Required) username to update password"
-								}
-							]
-						},
-						"description": "Update users password"
-					},
-					"response": [
-						{
-							"name": "User not authorized",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"password\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/password",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username",
-										"password"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						},
-						{
-							"name": "Sucessfully updated users password",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"password\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/password",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username",
-										"password"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "No Content",
-							"code": 204,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Invalid request",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"password\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/v1/:username/password",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"v1",
-										":username",
-										"password"
-									],
-									"variable": [
-										{
-											"key": "username"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Books Related",
-			"item": [
-				{
-					"name": "Retrieves all books",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/books/v1",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"books",
-								"v1"
-							]
-						},
-						"description": "Retrieves all books"
-					},
-					"response": [
-						{
-							"name": "See all books",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/books/v1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"Books\": [\n  {\n   \"book_title\": \"Duis exercitation Ut\",\n   \"user\": \"occaecat\"\n  },\n  {\n   \"book_title\": \"eu Duis\",\n   \"user\": \"Excepteur tempor\"\n  }\n ]\n}"
-						}
-					]
-				},
-				{
-					"name": "Add new book (Requires Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{auth_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/books/v1",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"books",
-								"v1"
-							]
-						},
-						"description": "Add new book"
-					},
-					"response": [
-						{
-							"name": "User not authorized",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/books/v1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1"
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						},
-						{
-							"name": "Invalid request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/books/v1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Sucessfully added a book",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/books/v1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"message\": \"exercitation dolor aliqua\",\n \"status\": \"fail\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Retrieves book by title along with secret (Requires Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{auth_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/books/v1/:book_title",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"books",
-								"v1",
-								":book_title"
-							],
-							"variable": [
-								{
-									"key": "book_title",
-									"value": "<string>",
-									"description": "(Required) retrieve book data"
-								}
-							]
-						},
-						"description": "Retrieves book by title along with secret. Only the owner may retrieve it"
-					},
-					"response": [
-						{
-							"name": "User not authorized",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/books/v1/:book_title",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1",
-										":book_title"
-									],
-									"variable": [
-										{
-											"key": "book_title"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						},
-						{
-							"name": "Book not found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/books/v1/:book_title",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1",
-										":book_title"
-									],
-									"variable": [
-										{
-											"key": "book_title"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"status\": \"fail\",\n \"message\": \"ipsum non et ea\"\n}"
-						},
-						{
-							"name": "Successfully retrieve book info",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/books/v1/:book_title",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"books",
-										"v1",
-										":book_title"
-									],
-									"variable": [
-										{
-											"key": "book_title"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n {\n  \"book_title\": \"qui proident adipisicing\",\n  \"owner\": \"in c\",\n  \"secret\": \"dolor eu magna\"\n },\n {\n  \"book_title\": \"cupidatat aute magna pariatur\",\n  \"owner\": \"nisi Ut pariatur id\",\n  \"secret\": \"nostrud eu velit\"\n }\n]"
-						}
-					]
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "VAmPI home",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						""
-					]
-				},
-				"description": "VAmPI is a vulnerable on purpose API. It was created in order to evaluate the efficiency of third party tools in identifying vulnerabilities in APIs but it can also be used in learning/teaching purposes."
-			},
-			"response": [
-				{
-					"name": "Home - Help",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								""
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n \"message\": \"irure magna incididunt dolore\",\n \"Help\": \"irure consequat\"\n}"
-				}
-			]
-		},
-		{
-			"name": "Creates and populates the database with dummy data",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/createdb",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"createdb"
-					]
-				},
-				"description": "Creates and populates the database with dummy data"
-			},
-			"response": [
-				{
-					"name": "Creates and populates the database with dummy data",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/createdb",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"createdb"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n \"message\": \"ex esse non sit\"\n}"
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:5000"
-		},
-		{
-			"key": "auth_token",
-			"value": ""
-		}
-	]
+  "info": {
+      "_postman_id": "188f227a-957c-4708-80f0-8c731f06fce9",
+      "name": "VAmPI",
+      "description": "OpenAPI v3 specs for VAmPI",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "_exporter_id": "16666514"
+  },
+  "item": [
+      {
+          "name": "users/v1",
+          "item": [
+              {
+                  "name": "{vampiUser}",
+                  "item": [
+                      {
+                          "name": "Retrieves user by username",
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "pm.test(\"Status code is 200\", () => {",
+                                          "  pm.response.to.have.status(200);",
+                                          "});"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "GET",
+                              "header": [],
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/{{vampiUser}}",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "{{vampiUser}}"
+                                  ]
+                              },
+                              "description": "Displays user by username"
+                          },
+                          "response": [
+                              {
+                                  "name": "Successfully display user info",
+                                  "originalRequest": {
+                                      "method": "GET",
+                                      "header": [],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": "[\n {\n  \"username\": \"et cupidatat\",\n  \"email\": \"labore\"\n },\n {\n  \"username\": \"incididunt elit mollit\",\n  \"email\": \"dolor dolor id\"\n }\n]"
+                              },
+                              {
+                                  "name": "User not found",
+                                  "originalRequest": {
+                                      "method": "GET",
+                                      "header": [],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      },
+                      {
+                          "name": "inject header retrieves user by username",
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "pm.test(\"Status code is 200\", () => {",
+                                          "  pm.response.to.have.status(200);",
+                                          "});"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "GET",
+                              "header": [
+                                  {
+                                      "key": "Role",
+                                      "value": "Admin",
+                                      "type": "text"
+                                  }
+                              ],
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/{{vampiUser}}",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "{{vampiUser}}"
+                                  ]
+                              },
+                              "description": "Displays user by username"
+                          },
+                          "response": [
+                              {
+                                  "name": "Successfully display user info",
+                                  "originalRequest": {
+                                      "method": "GET",
+                                      "header": [],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": "[\n {\n  \"username\": \"et cupidatat\",\n  \"email\": \"labore\"\n },\n {\n  \"username\": \"incididunt elit mollit\",\n  \"email\": \"dolor dolor id\"\n }\n]"
+                              },
+                              {
+                                  "name": "User not found",
+                                  "originalRequest": {
+                                      "method": "GET",
+                                      "header": [],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Deletes user by username (Only Admins) as user",
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "var user = pm.environment.get(\"vampiUser\");",
+                                          "",
+                                          "if (user == 'admin') {",
+                                          "     pm.test(\"Status code is 200\", () => {",
+                                          "     pm.response.to.have.status(200);",
+                                          "     });",
+                                          "} else {",
+                                          "    pm.test(\"Status code is 401 because user is not admin\", () => {",
+                                          "    pm.response.to.have.status(401);",
+                                          "    });",
+                                          "}"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "DELETE",
+                              "header": [],
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/{{vampiUser}}",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "{{vampiUser}}"
+                                  ]
+                              },
+                              "description": "Deletes user by username (Only Admins)"
+                          },
+                          "response": [
+                              {
+                                  "name": "User not authorized",
+                                  "originalRequest": {
+                                      "method": "DELETE",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "User not found",
+                                  "originalRequest": {
+                                      "method": "DELETE",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "Sucessfully deleted user",
+                                  "originalRequest": {
+                                      "method": "DELETE",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "No Content",
+                                  "code": 204,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Deletes user by username (Only Admins) as admin",
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "var user = pm.environment.get(\"vampiAdminUser\");",
+                                          "",
+                                          "if (user == 'admin') {",
+                                          "     pm.test(\"Status code is 200\", () => {",
+                                          "     pm.response.to.have.status(200);",
+                                          "     });",
+                                          "} else {",
+                                          "    pm.test(\"Status code is 401 because user is not admin\", () => {",
+                                          "    pm.response.to.have.status(401);",
+                                          "    });",
+                                          "}"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              },
+                              {
+                                  "listen": "prerequest",
+                                  "script": {
+                                      "exec": [
+                                          "var vampiHost = pm.environment.get(\"vampiHost\");",
+                                          "var vampiUser = pm.environment.get(\"vampiAdminUser\");",
+                                          "var vampiPW = pm.environment.get(\"vampiAdminPW\");",
+                                          "pm.sendRequest({",
+                                          "    url: 'http://'+vampiHost+'/users/v1/login',",
+                                          "    method: 'POST',",
+                                          "    header: 'Content-Type: application/json',",
+                                          "    body: \"{\\\"username\\\":\\\"\" +vampiUser+\"\\\", \\\"password\\\":\\\"\" +vampiPW+\"\\\"}\"   ",
+                                          "}, function (err, res) {",
+                                          "   var data = res.json();",
+                                          "   pm.environment.set('authzToken', data.auth_token);",
+                                          "});",
+                                          "",
+                                          ""
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "DELETE",
+                              "header": [],
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/{{vampiAdminUser}}",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "{{vampiAdminUser}}"
+                                  ]
+                              },
+                              "description": "Deletes user by username (Only Admins)"
+                          },
+                          "response": [
+                              {
+                                  "name": "User not authorized",
+                                  "originalRequest": {
+                                      "method": "DELETE",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "User not found",
+                                  "originalRequest": {
+                                      "method": "DELETE",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "Sucessfully deleted user",
+                                  "originalRequest": {
+                                      "method": "DELETE",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "No Content",
+                                  "code": 204,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Register new user (re-register deleted admin user)",
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "pm.test(\"Status code is 200\", () => {",
+                                          "  pm.response.to.have.status(200);",
+                                          "});"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              },
+                              {
+                                  "listen": "prerequest",
+                                  "script": {
+                                      "exec": [
+                                          ""
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "POST",
+                              "header": [
+                                  {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                  }
+                              ],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"pass1\",\n    \"email\": \"admin@mail.com\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/register",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "register"
+                                  ],
+                                  "query": [
+                                      {
+                                          "key": "username",
+                                          "value": "foo",
+                                          "disabled": true
+                                      },
+                                      {
+                                          "key": "password",
+                                          "value": "foobar",
+                                          "disabled": true
+                                      },
+                                      {
+                                          "key": "email",
+                                          "value": "foo@bar.com",
+                                          "disabled": true
+                                      }
+                                  ]
+                              },
+                              "description": "Register new user"
+                          },
+                          "response": [
+                              {
+                                  "name": "Sucessfully created user",
+                                  "originalRequest": {
+                                      "method": "POST",
+                                      "header": [],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/register",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              "register"
+                                          ]
+                                      }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "Invalid request",
+                                  "originalRequest": {
+                                      "method": "POST",
+                                      "header": [],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/register",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              "register"
+                                          ]
+                                      }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Update users email",
+                          "event": [
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "pm.test(\"Status code is 204\", () => {",
+                                          "  pm.response.to.have.status(204);",
+                                          "});"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              },
+                              {
+                                  "listen": "prerequest",
+                                  "script": {
+                                      "exec": [
+                                          ""
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "PUT",
+                              "header": [
+                                  {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                  }
+                              ],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"email\": \"name1@example.com\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/{{vampiUser}}/email",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "{{vampiUser}}",
+                                      "email"
+                                  ]
+                              },
+                              "description": "Update a single users email"
+                          },
+                          "response": [
+                              {
+                                  "name": "Invalid request",
+                                  "originalRequest": {
+                                      "method": "PUT",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"email\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username/email",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username",
+                                              "email"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "User not authorized",
+                                  "originalRequest": {
+                                      "method": "PUT",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"email\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username/email",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username",
+                                              "email"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "Sucessfully updated user email",
+                                  "originalRequest": {
+                                      "method": "PUT",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"email\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username/email",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username",
+                                              "email"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "No Content",
+                                  "code": 204,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Update users password",
+                          "event": [
+                              {
+                                  "listen": "prerequest",
+                                  "script": {
+                                      "exec": [
+                                          "//update environment to match",
+                                          "pm.environment.set(\"vampiPW\",\"string\");"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              },
+                              {
+                                  "listen": "test",
+                                  "script": {
+                                      "exec": [
+                                          "pm.test(\"Status code is 204\", () => {",
+                                          "  pm.response.to.have.status(204);",
+                                          "});"
+                                      ],
+                                      "type": "text/javascript"
+                                  }
+                              }
+                          ],
+                          "request": {
+                              "method": "PUT",
+                              "header": [
+                                  {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                  }
+                              ],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"password\": \"string\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{vampiHost}}/users/v1/{{vampiUser}}/password",
+                                  "host": [
+                                      "{{vampiHost}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "{{vampiUser}}",
+                                      "password"
+                                  ]
+                              },
+                              "description": "Update users password"
+                          },
+                          "response": [
+                              {
+                                  "name": "Sucessfully updated users password",
+                                  "originalRequest": {
+                                      "method": "PUT",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"password\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username/password",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username",
+                                              "password"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "No Content",
+                                  "code": 204,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "User not authorized",
+                                  "originalRequest": {
+                                      "method": "PUT",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"password\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username/password",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username",
+                                              "password"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              },
+                              {
+                                  "name": "Invalid request",
+                                  "originalRequest": {
+                                      "method": "PUT",
+                                      "header": [
+                                          {
+                                              "description": "Added as a part of security scheme: bearer",
+                                              "key": "Authorization",
+                                              "value": "Bearer <token>"
+                                          }
+                                      ],
+                                      "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n    \"password\": \"<string>\"\n}"
+                                      },
+                                      "url": {
+                                          "raw": "{{baseUrl}}/users/v1/:username/password",
+                                          "host": [
+                                              "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                              "users",
+                                              "v1",
+                                              ":username",
+                                              "password"
+                                          ],
+                                          "variable": [
+                                              {
+                                                  "key": "username"
+                                              }
+                                          ]
+                                      }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [
+                                      {
+                                          "key": "Content-Type",
+                                          "value": "text/plain"
+                                      }
+                                  ],
+                                  "cookie": [],
+                                  "body": ""
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "name": "Retrieves all users",
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "pm.test(\"Status code is 200\", () => {",
+                                  "  pm.response.to.have.status(200);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "GET",
+                      "header": [],
+                      "url": {
+                          "raw": "{{vampiHost}}/users/v1",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "users",
+                              "v1"
+                          ]
+                      },
+                      "description": "Displays all users with basic information"
+                  },
+                  "response": [
+                      {
+                          "name": "See basic info about all users",
+                          "originalRequest": {
+                              "method": "GET",
+                              "header": [],
+                              "url": {
+                                  "raw": "{{baseUrl}}/users/v1",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1"
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Retrieves all details for all users",
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "pm.test(\"Status code is 200\", () => {",
+                                  "  pm.response.to.have.status(200);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "GET",
+                      "header": [],
+                      "url": {
+                          "raw": "{{vampiHost}}/users/v1/_debug",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "users",
+                              "v1",
+                              "_debug"
+                          ]
+                      },
+                      "description": "Displays all details for all users"
+                  },
+                  "response": [
+                      {
+                          "name": "See all details of the users",
+                          "originalRequest": {
+                              "method": "GET",
+                              "header": [],
+                              "url": {
+                                  "raw": "{{baseUrl}}/users/v1/_debug",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "_debug"
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "sql inject register new user",
+                  "event": [
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "exec": [
+                                  ""
+                              ],
+                              "type": "text/javascript"
+                          }
+                      },
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "pm.test(\"Injection! Status code is 200\", () => {",
+                                  "  pm.response.to.have.status(200);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "POST",
+                      "header": [
+                          {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                          }
+                      ],
+                      "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"username\": \"foo\",\n    \"password\": \"foobar\",\n    \"email\": \"foo@bar.com\"\n}"
+                      },
+                      "url": {
+                          "raw": "{{vampiHost}}/users/v1/register?username=' OR 1==1 --&password=foobar2&email=foo2@bar.com",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "users",
+                              "v1",
+                              "register"
+                          ],
+                          "query": [
+                              {
+                                  "key": "username",
+                                  "value": "' OR 1==1 --"
+                              },
+                              {
+                                  "key": "password",
+                                  "value": "foobar2"
+                              },
+                              {
+                                  "key": "email",
+                                  "value": "foo2@bar.com"
+                              }
+                          ]
+                      },
+                      "description": "Register new user"
+                  },
+                  "response": [
+                      {
+                          "name": "Sucessfully created user",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/users/v1/register",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "register"
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      },
+                      {
+                          "name": "Invalid request",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"email\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/users/v1/register",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "register"
+                                  ]
+                              }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Login to VAmPI",
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "pm.test(\"Status code is 200\", () => {",
+                                  "  pm.response.to.have.status(200);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "POST",
+                      "header": [
+                          {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                          }
+                      ],
+                      "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"username\": \"{{vampiUser}}\",\n    \"password\": \"{{vampiPW}}\"\n}"
+                      },
+                      "url": {
+                          "raw": "{{vampiHost}}/users/v1/login",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "users",
+                              "v1",
+                              "login"
+                          ],
+                          "query": [
+                              {
+                                  "key": "username",
+                                  "value": "foo",
+                                  "disabled": true
+                              },
+                              {
+                                  "key": "password",
+                                  "value": "foobar",
+                                  "disabled": true
+                              }
+                          ]
+                      },
+                      "description": "Login to VAmPI"
+                  },
+                  "response": [
+                      {
+                          "name": "Invalid request",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/users/v1/login",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "login"
+                                  ]
+                              }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      },
+                      {
+                          "name": "Sucessfully logged in user",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/users/v1/login",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "users",
+                                      "v1",
+                                      "login"
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "books/v1",
+          "item": [
+              {
+                  "name": "Retrieves all books",
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "pm.test(\"Status code is 200\", () => {",
+                                  "  pm.response.to.have.status(200);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      },
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "exec": [
+                                  ""
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "GET",
+                      "header": [],
+                      "url": {
+                          "raw": "{{vampiHost}}/books/v1",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "books",
+                              "v1"
+                          ]
+                      },
+                      "description": "Retrieves all books"
+                  },
+                  "response": [
+                      {
+                          "name": "See all books",
+                          "originalRequest": {
+                              "method": "GET",
+                              "header": [],
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1"
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Add new book",
+                  "event": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "pm.test(\"Status code is 200\", () => {",
+                                  "  pm.response.to.have.status(200);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      },
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "exec": [
+                                  ""
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "POST",
+                      "header": [
+                          {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                          }
+                      ],
+                      "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"book_title\": \"MyAmazingBook\",\n    \"secret\": \"SuperDuperSecret\"\n}"
+                      },
+                      "url": {
+                          "raw": "{{vampiHost}}/books/v1",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "books",
+                              "v1"
+                          ]
+                      },
+                      "description": "Add new book"
+                  },
+                  "response": [
+                      {
+                          "name": "Invalid request",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [
+                                  {
+                                      "description": "Added as a part of security scheme: bearer",
+                                      "key": "Authorization",
+                                      "value": "Bearer <token>"
+                                  }
+                              ],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1"
+                                  ]
+                              }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      },
+                      {
+                          "name": "Sucessfully added a book",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [
+                                  {
+                                      "description": "Added as a part of security scheme: bearer",
+                                      "key": "Authorization",
+                                      "value": "Bearer <token>"
+                                  }
+                              ],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1"
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      },
+                      {
+                          "name": "User not authorized",
+                          "originalRequest": {
+                              "method": "POST",
+                              "header": [
+                                  {
+                                      "description": "Added as a part of security scheme: bearer",
+                                      "key": "Authorization",
+                                      "value": "Bearer <token>"
+                                  }
+                              ],
+                              "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n    \"book_title\": \"<string>\",\n    \"secret\": \"<string>\"\n}"
+                              },
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1"
+                                  ]
+                              }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Retrieves book by title along with secret",
+                  "event": [
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "exec": [
+                                  "var vampiHost = pm.environment.get(\"vampiHost\")",
+                                  "",
+                                  "pm.sendRequest({",
+                                  "    url: 'http://'+vampiHost+'/books/v1',",
+                                  "    method: 'GET',",
+                                  "    header: 'Content-Type: application/json',",
+                                  "}, function (err, res) {",
+                                  "   var data = res.json();",
+                                  "   pm.environment.set(\"user2BookTitle\", data.Books[1].book_title);",
+                                  "});"
+                              ],
+                              "type": "text/javascript"
+                          }
+                      },
+                      {
+                          "listen": "test",
+                          "script": {
+                              "exec": [
+                                  "var secureMode = pm.environment.get(\"secure\");",
+                                  "if (secureMode == \"true\") {",
+                                  "    pm.test(\"Status code is 404 because Vampi is secure\", () => {",
+                                  "        pm.response.to.have.status(404);",
+                                  "});",
+                                  "} else if (secureMode == \"false\") {",
+                                  "    pm.test(\"Status code is 200 because Vampi is vulnerable\", () => {",
+                                  "        pm.response.to.have.status(200);",
+                                  "    });",
+                                  "} "
+                              ],
+                              "type": "text/javascript"
+                          }
+                      }
+                  ],
+                  "request": {
+                      "method": "GET",
+                      "header": [],
+                      "url": {
+                          "raw": "{{vampiHost}}/books/v1/{{user2BookTitle}}",
+                          "host": [
+                              "{{vampiHost}}"
+                          ],
+                          "path": [
+                              "books",
+                              "v1",
+                              "{{user2BookTitle}}"
+                          ]
+                      },
+                      "description": "Retrieves book by title along with secret. Only the owner may retrieve it"
+                  },
+                  "response": [
+                      {
+                          "name": "User not authorized",
+                          "originalRequest": {
+                              "method": "GET",
+                              "header": [
+                                  {
+                                      "description": "Added as a part of security scheme: bearer",
+                                      "key": "Authorization",
+                                      "value": "Bearer <token>"
+                                  }
+                              ],
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1/:book",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1",
+                                      ":book"
+                                  ],
+                                  "variable": [
+                                      {
+                                          "key": "book"
+                                      }
+                                  ]
+                              }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      },
+                      {
+                          "name": "Book not found",
+                          "originalRequest": {
+                              "method": "GET",
+                              "header": [
+                                  {
+                                      "description": "Added as a part of security scheme: bearer",
+                                      "key": "Authorization",
+                                      "value": "Bearer <token>"
+                                  }
+                              ],
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1/:book",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1",
+                                      ":book"
+                                  ],
+                                  "variable": [
+                                      {
+                                          "key": "book"
+                                      }
+                                  ]
+                              }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "text/plain"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": ""
+                      },
+                      {
+                          "name": "Successfully retrieve book info",
+                          "originalRequest": {
+                              "method": "GET",
+                              "header": [
+                                  {
+                                      "description": "Added as a part of security scheme: bearer",
+                                      "key": "Authorization",
+                                      "value": "Bearer <token>"
+                                  }
+                              ],
+                              "url": {
+                                  "raw": "{{baseUrl}}/books/v1/:book",
+                                  "host": [
+                                      "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                      "books",
+                                      "v1",
+                                      ":book"
+                                  ],
+                                  "variable": [
+                                      {
+                                          "key": "book"
+                                      }
+                                  ]
+                              }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                              {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                              }
+                          ],
+                          "cookie": [],
+                          "body": "[\n {\n  \"book_title\": \"occaecat\",\n  \"secret\": \"laboris et nisi\",\n  \"owner\": \"sunt laboris\"\n },\n {\n  \"book_title\": \"cillum\",\n  \"secret\": \"Ut in non amet exercitation\",\n  \"owner\": \"amet qui aliquip\"\n }\n]"
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Creates and populates the database with dummy data",
+          "event": [
+              {
+                  "listen": "prerequest",
+                  "script": {
+                      "exec": [
+                          "// force the env to match, otherwise auth will fail in unusual ways",
+                          "pm.environment.set(\"vampiPW\",\"pass1\");",
+                          ""
+                      ],
+                      "type": "text/javascript"
+                  }
+              },
+              {
+                  "listen": "test",
+                  "script": {
+                      "exec": [
+                          "pm.test(\"Status code is 200\", () => {",
+                          "  pm.response.to.have.status(200);",
+                          "});"
+                      ],
+                      "type": "text/javascript"
+                  }
+              }
+          ],
+          "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                  "raw": "{{vampiHost}}/createdb",
+                  "host": [
+                      "{{vampiHost}}"
+                  ],
+                  "path": [
+                      "createdb"
+                  ]
+              },
+              "description": "Creates and populates the database with dummy data"
+          },
+          "response": [
+              {
+                  "name": "Creates and populates the database with dummy data",
+                  "originalRequest": {
+                      "method": "GET",
+                      "header": [],
+                      "url": {
+                          "raw": "{{baseUrl}}/createdb",
+                          "host": [
+                              "{{baseUrl}}"
+                          ],
+                          "path": [
+                              "createdb"
+                          ]
+                      }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                      {
+                          "key": "Content-Type",
+                          "value": "text/plain"
+                      }
+                  ],
+                  "cookie": [],
+                  "body": ""
+              }
+          ]
+      },
+      {
+          "name": "VAmPI home",
+          "event": [
+              {
+                  "listen": "test",
+                  "script": {
+                      "exec": [
+                          "pm.test(\"Status code is 200\", () => {",
+                          "  pm.response.to.have.status(200);",
+                          "});"
+                      ],
+                      "type": "text/javascript"
+                  }
+              }
+          ],
+          "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                  "raw": "{{vampiHost}}/",
+                  "host": [
+                      "{{vampiHost}}"
+                  ],
+                  "path": [
+                      ""
+                  ]
+              },
+              "description": "VAmPI is a vulnerable on purpose API. It was created in order to evaluate the efficiency of third party tools in identifying vulnerabilities in APIs but it can also be used in learning/teaching purposes."
+          },
+          "response": [
+              {
+                  "name": "Home - Help",
+                  "originalRequest": {
+                      "method": "GET",
+                      "header": [],
+                      "url": {
+                          "raw": "{{baseUrl}}/",
+                          "host": [
+                              "{{baseUrl}}"
+                          ],
+                          "path": [
+                              ""
+                          ]
+                      }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                      {
+                          "key": "Content-Type",
+                          "value": "text/plain"
+                      }
+                  ],
+                  "cookie": [],
+                  "body": ""
+              }
+          ]
+      }
+  ],
+  "auth": {
+      "type": "bearer",
+      "bearer": [
+          {
+              "key": "token",
+              "value": "{{authzToken}}",
+              "type": "string"
+          }
+      ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "var vampiHost = pm.environment.get(\"vampiHost\");",
+          "var vampiUser = pm.environment.get(\"vampiUser\");",
+          "var vampiPW = pm.environment.get(\"vampiPW\");",
+          "pm.sendRequest({",
+          "    url: 'http://'+vampiHost+'/users/v1/login',",
+          "    method: 'POST',",
+          "    header: 'Content-Type: application/json',",
+          "    body: \"{\\\"username\\\":\\\"\" +vampiUser+\"\\\", \\\"password\\\":\\\"\" +vampiPW+\"\\\"}\"   ",
+          "}, function (err, res) {",
+          "   var data = res.json();",
+          "   pm.environment.set('authzToken', data.auth_token);",
+          "});",
+          "",
+          ""
+        ]
+      }
+    },
+    {
+        "listen": "test",
+        "script": {
+            "type": "text/javascript",
+            "exec": [
+                ""
+            ]
+        }
+    }
+  ]
 }
