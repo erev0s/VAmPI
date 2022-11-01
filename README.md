@@ -67,20 +67,14 @@ docker run -d -p 5000:5000 vampi_docker:latest
 [Note: if you run Docker on newer versions of the MacOS, use `-p 5001:5000` to avoid conflicting with the AirPlay Receiver service. Alternatively, you could disable the AirPlay Receiver service in your System Preferences -> Sharing settings.]
 
   #### Run it through Docker Compose
-Assuming you've built the container per the above steps, run one instance securely (port 5001) and another insecurely (port 5002):
+`docker-compose` contains two instances, one instance with the secure configuration on port 5001 and another with insecure on port 5002:
 ~~~~
-docker compose up -d
+docker-compose up -d
 ~~~~
 
-#### Run it in Kubernetes
+## Running Postman against it
 
-Assuming you have access to a Kubernetes cluster and kubectl connected to it:
-
-```
-kubectl apply -f vampi-secure-deployment.yaml,vampi-secure-service.yaml,vampi-vulnerable-deployment.yaml,vampi-vulnerable-service.yaml
-```
-
- will deploy it and LoadBalancers for you.
+Included in the `openapi_specs` directory is a Postman Collection and two environments, one secure and one vulnerable. To use them, import them into a Postman Workspace and either run the requests individually or using the Postman Runner. Tests are included.
 
 ## Customizing token timeout and vulnerable environment or not
 
@@ -95,4 +89,3 @@ If you would like to alter the timeout of the token created after login or if yo
 
 
  [Picture from freepik - www.freepik.com](https://www.freepik.com/vectors/party)
-
