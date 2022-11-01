@@ -74,7 +74,7 @@ docker-compose up -d
 
 ## Running Postman against it
 
-Included in the `openapi_specs` directory is a Postman Collection and two environments, one secure and one vulnerable. To use them, import them into a Postman Workspace and either run the requests individually or using the Postman Runner. Tests are included.
+Included in the `openapi_specs` directory is a Postman Collection and two Postman environments, one secure and one vulnerable. To use them, import them into a Postman Workspace and either run the requests individually or using the Postman Runner. Tests are included.
 
 ## Customizing token timeout and vulnerable environment or not
 
