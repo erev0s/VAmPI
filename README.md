@@ -55,6 +55,8 @@ Or if you prefer you can also run it through docker or docker compose.
 
  #### Run it through Docker
 
+ - Available in [Dockerhub](https://hub.docker.com/repository/docker/erev0s/vampi)
+
 **Build with**
 ~~~~
 docker build -t vampi_docker:latest .
