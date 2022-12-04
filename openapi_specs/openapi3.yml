@@ -421,7 +421,18 @@ paths:
                     example: 'success'
         '400':
           description: Invalid request
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['fail']
+                    example: 'fail'
+                  message:
+                    type: string
+                    example: 'Book Already exists!'
         '401':
           description: User not authorized
           content:
