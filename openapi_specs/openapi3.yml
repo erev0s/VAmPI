@@ -24,7 +24,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Database populated."
+                    example: 'Database populated.'
   /:
     get:
       tags:
@@ -46,8 +46,13 @@ paths:
                 properties:
                   message:
                     type: string
-                  Help:
+                    example: 'VAmPI the Vulnerable API'
+                  help:
                     type: string
+                    example: 'VAmPI is a vulnerable on purpose API. It was created in order to evaluate the efficiency of third party tools in identifying vulnerabilities in APIs but it can also be used in learning/teaching purposes.'
+                  vulnerable:
+                    type: number
+                    example: 1
   /users/v1:
     get:
       tags:
@@ -369,6 +374,14 @@ paths:
                           type: string
                         user:
                           type: string
+              example:
+                Books:
+                  - book_title: 'bookTitle77'
+                    user: 'name1'
+                  - book_title: 'bookTitle85'
+                    user: 'name2'
+                  - book_title: 'bookTitle47'
+                    user: 'admin'
     post:
       tags:
         - books
@@ -386,8 +399,10 @@ paths:
               properties:
                 book_title:
                   type: string
+                  example: 'book99'
                 secret:
                   type: string
+                  example: 'pass1secret'
         required: true
       responses:
         '200':
@@ -399,9 +414,11 @@ paths:
                 properties:
                   message:
                     type: string
+                    example: 'Book has been added.'
                   status:
                     type: string
                     enum: ['success', 'fail']
+                    example: 'success'
         '400':
           description: Invalid request
           content: {}
@@ -415,8 +432,10 @@ paths:
                   status:
                     type: string
                     enum: ['fail']
+                    example: 'fail'
                   message:
                     type: string
+                    example: 'Invalid Token'
   /books/v1/{book_title}:
     get:
       tags:
@@ -433,6 +452,7 @@ paths:
           required: true
           schema:
             type: string
+            example: 'bookTitle77'
       responses:
         '200':
           description: Successfully retrieve book info
@@ -445,10 +465,13 @@ paths:
                   properties:
                     book_title:
                       type: string
+                      example: 'bookTitle77'
                     owner:
                       type: string
+                      example: 'name1'
                     secret:
                       type: string
+                      example: 'secret for bookTitle77'
         '401':
           description: User not authorized
           content:
@@ -459,8 +482,10 @@ paths:
                   status:
                     type: string
                     enum: ['fail']
+                    example: 'fail'
                   message:
                     type: string
+                    example: 'Invalid Token'
         '404':
           description: Book not found
           content:
@@ -471,6 +496,7 @@ paths:
                   status:
                     type: string
                     enum: ['fail']
+                    example: 'fail'
                   message:
                     type: string
-
+                    example: 'Book not found!'
