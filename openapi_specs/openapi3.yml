@@ -24,6 +24,7 @@ paths:
                 properties:
                   message:
                     type: string
+                    example: "Database populated."
   /:
     get:
       tags:
