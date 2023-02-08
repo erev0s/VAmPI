@@ -5,6 +5,7 @@ from config import db, vuln_app
 from app import vuln, alive
 from models.books_model import Book
 from random import randrange
+from sqlalchemy.sql import text
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -43,7 +44,7 @@ class User(db.Model):
     @staticmethod
     def decode_auth_token(auth_token):
         try:
-            payload = jwt.decode(auth_token, vuln_app.app.config.get('SECRET_KEY'))
+            payload = jwt.decode(auth_token, vuln_app.app.config.get('SECRET_KEY'), algorithms=["HS256"])
             return payload['sub']
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
@@ -68,7 +69,7 @@ class User(db.Model):
     def get_user(username):
         if vuln:  # SQLi Injection
             user_query = f"SELECT * FROM users WHERE username = '{username}'"
-            query = db.session.execute(user_query)
+            query = db.session.execute(text(user_query))
             ret = query.fetchone()
             if ret:
                 fin_query = '{"username": "%s", "email": "%s"}' % (ret[1], ret[3])
