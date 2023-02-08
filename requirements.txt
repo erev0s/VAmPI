@@ -1,8 +1,8 @@
-connexion~=2.7.0
-flask~=1.1.2
-flask-sqlalchemy
-jsonschema~=3.2.0
-sqlalchemy
+connexion==2.14.2
+flask==2.2.2
+flask-sqlalchemy==3.0.3
+jsonschema==4.17.3
+sqlalchemy==2.0.2
 swagger-ui-bundle
-PyJWT~=1.7.1
-markupsafe==2.0.1
+PyJWT==2.6.0
+markupsafe==2.1.2

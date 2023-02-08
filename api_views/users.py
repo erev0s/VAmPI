@@ -76,7 +76,7 @@ def login_user():
             responseObject = {
                 'status': 'success',
                 'message': 'Successfully logged in.',
-                'auth_token': auth_token.decode("utf-8")
+                'auth_token': auth_token
             }
             return Response(json.dumps(responseObject), 200, mimetype="application/json")
         if vuln:  # Password Enumeration
