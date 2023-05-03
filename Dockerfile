@@ -1,11 +1,12 @@
-FROM python:3.7-alpine as builder
-RUN apk --update add bash nano g++
+FROM python:3.11-alpine as builder
+RUN apk --update add bash nano g++ openssl3
 COPY . /vampi
 WORKDIR /vampi
+RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Build a fresh container, copying across files & compiled parts
-FROM python:3.7-alpine
+FROM python:3.11-alpine
 COPY . /vampi
 WORKDIR /vampi
 COPY --from=builder /usr/local/lib /usr/local/lib

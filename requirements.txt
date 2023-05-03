@@ -1,5 +1,5 @@
-connexion==2.14.2
-flask==2.2.2
+connexion
+Flask==2.3.2
 flask-sqlalchemy==3.0.3
 jsonschema==4.17.3
 sqlalchemy==2.0.2
