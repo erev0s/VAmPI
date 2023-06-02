@@ -24,7 +24,8 @@ class User(db.Model):
         self.admin = admin
 
     def __repr__(self):
-        return f"<User(name={self.username}, email={self.email})>"
+        return f'{{"username": "{self.username}", "email": "{self.email}"}}'
+        # return f"<User(name={self.username}, email={self.email})>"
 
     def encode_auth_token(self, user_id):
         try:
