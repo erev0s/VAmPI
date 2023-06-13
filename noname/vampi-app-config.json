@@ -1,0 +1,14 @@
+{
+    "applicationId": "f0d714e6-a7e8-430a-9853-9d1f1ab547aa",
+    "version": "1.0.0",
+    "host": "http://host.docker.internal:5002",
+    "sources": [
+        {
+            "name": "openapi3.yml",
+            "openApi": {
+                "sourcePath": "/noname/openapi3.yml"
+            }
+        }
+    ],
+    "auths": []
+}
