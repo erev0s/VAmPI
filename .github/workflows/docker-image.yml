@@ -1,32 +1,48 @@
-name: Docker Image CI
-
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
+
+env:
+  ACTIVE_API_URL: "https://active-v2-poc.nonamesec.com/active"
 
 jobs:
-
-  build:
-
+  scan:
     runs-on: ubuntu-latest
 
     steps:
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run VAmPI
+        run: docker compose up -d
+
+      - name: Test VAmPI
+        run: sleep 5 && curl http://localhost:5002/ --retry 10 --retry-delay 1
+
+      - name: Docker login
+        uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vampi:latest
-          platforms: linux/amd64,linux/arm64
+          registry: jfrog.cicd.nonamesec.com/noname-docker-release
+          username: ${{ secrets.ACTIVE_REGISTRY_USER }}
+          password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
+
+      - name: Active Testing Scan
+        run: >
+          docker run
+          --add-host=host.docker.internal:host-gateway
+          -e ACTIVE_CONFIG_FILE_PATH=/noname/vampi-with-auths.json
+          -v $(pwd)/noname:/noname
+          jfrog.cicd.nonamesec.com/noname-docker-release/active-cli:$(curl ${{env.ACTIVE_API_URL}}/backend/version) scan
+          --api-url=${{ env.ACTIVE_API_URL }}
+          --api-token=${{ secrets.ACTIVE_API_TOKEN }}
+          --test-group-id=62f5921c-d200-4f6f-a104-29674ad30a94
+          --branch-name=${{ github.head_ref || github.ref_name }}
+          --severity-threshold=none
+
+  deploy:
+    needs: scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo
+        run: echo Security scan passed, deploying to production
