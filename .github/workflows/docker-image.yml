@@ -26,6 +26,7 @@ jobs:
         run: docker push mathersb2j/vampi-vulnerable:latest
 
   deployment:
+    needs: build
     runs-on: self-hosted
     steps:
       - name: Pull secure image
