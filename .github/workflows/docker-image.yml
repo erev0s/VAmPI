@@ -9,9 +9,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: zsh
+
     steps:
       -
         name: Checkout source
