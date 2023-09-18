@@ -2,6 +2,7 @@ version: "3"
 services:
  vampi-secure:
   build: ./
+  image: mathersb2j/vampi-secure:latest
   container_name: vampi-secure
   ports:
    - 5001:5000
@@ -10,6 +11,7 @@ services:
 
  vampi-vulnerable:
   build: ./
+  image: mathersb2j/vampi-vulnerable:latest
   container_name: vampi-vulnerable
   ports:
    - 5002:5000
