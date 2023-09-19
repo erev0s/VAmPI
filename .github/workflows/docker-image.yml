@@ -35,7 +35,7 @@ jobs:
       # - name: Pull secure image
       #   run: docker pull mathersb2j/vampi-secure:latest
       - name: Pull vulnerable image
-        run: mathersb2j/vampi-vulnerable:latest
+        run: docker pull mathersb2j/vampi-vulnerable:latest
       # - name: Delete old secure container
       #   run: docker rm -f vampi-secure
       - name: Delete old vulnerable container
