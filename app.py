@@ -9,7 +9,7 @@ import os
 vuln = int(os.getenv('vulnerable', 1))
 # vuln=1
 # token alive for how many seconds?
-alive = int(os.getenv('tokentimetolive', 600))
+alive = int(os.getenv('tokentimetolive', 7200))
 
 
 # start the app with port 5000 and debug on!

@@ -11,7 +11,7 @@ WORKDIR /vampi
 COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /usr/local/bin /usr/local/bin
 ENV vulnerable=1
-ENV tokentimetolive=600
+ENV tokentimetolive=7200
 
 ENTRYPOINT ["python"]
 CMD ["app.py"]
