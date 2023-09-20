@@ -52,6 +52,6 @@ jobs:
       # - name: Run secure docker container
       #   run: docker run -d -p 5000:5000 --name vampi-secure mathersb2j/vampi-secure:latest
       - name: Run vulnerable docker container
-        run: docker run -d -p 5000:5000 --name vampi-vulnerable mathersb2j/vampi-vulnerable:latest
+        run: docker run -u root:root -d -p 5000:5000 --name vampi-vulnerable mathersb2j/vampi-vulnerable:latest
 
 
