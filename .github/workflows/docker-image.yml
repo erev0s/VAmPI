@@ -28,10 +28,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       # - name: Build secure docker image
       #   run: docker build -t mathersb2j/vampi-secure:latest .
       # - name: Push secure image to docker hub
       #   run: docker push mathersb2j/vampi-secure:latest
+      
       - name: Build vulnerable docker image
         run: docker build -t mathersb2j/vampi-vulnerable:latest .
       - name: Push vulnerable image to docker hub
