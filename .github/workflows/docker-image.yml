@@ -14,9 +14,6 @@ jobs:
 
       - name: Checkout source
         uses: actions/checkout@v3
-      
-      - name: Checkout source
-        uses: actions/checkout@v3
 
       - name: Run Prisma Cloud Scan
         id: prisma-cloud
