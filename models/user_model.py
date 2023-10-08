@@ -100,5 +100,5 @@ class User(db.Model):
         User.register_user("admin", "pass1", "admin@mail.com", True)
 
     @staticmethod
-    def api_unspecified_path():
+    def api_unspecified_path(username):
         return 'Test of hidden API endpoint to trigger an API unspecified path'
