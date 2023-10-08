@@ -101,4 +101,4 @@ class User(db.Model):
 
     @staticmethod
     def api_unspecified_path(username):
-        return 'Test of hidden API endpoint to trigger an API unspecified path'
+        return ("Test of hidden API endpoint to trigger an API unspecified path")

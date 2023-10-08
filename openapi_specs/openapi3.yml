@@ -92,6 +92,11 @@ paths:
                 type: string
                 items:
                   type: string
+                  properties:
+                    message:
+                      type: string
+                      example: 'Database populated.'
+
   /users/v1/_debug:
     get:
       tags:
