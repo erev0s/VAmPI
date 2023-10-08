@@ -76,6 +76,22 @@ paths:
                     username:
                       type: string
                       example: 'name1'
+  /users/v1/unspecified:
+    get:
+      tags:
+        - users
+      summary: Prints string, test of PC WAAS
+      description: Prints string, test of PC WAAS
+      operationId: api_views.users.api_unspecified_path
+      responses:
+        '200':
+          description: Prints string, test of PC WAAS
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  type: string
   /users/v1/_debug:
     get:
       tags:
