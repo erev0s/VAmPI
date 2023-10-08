@@ -209,5 +209,5 @@ def delete_user(username):
 
 
 
-def api_unspecified_path(username):
+def api_unspecified_path():
     return Response(str(User.api_unspecified_path()), 200, mimetype="application/json")
