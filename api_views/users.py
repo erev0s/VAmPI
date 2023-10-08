@@ -206,3 +206,7 @@ def delete_user(username):
                 return Response(error_message_helper("User not found!"), 404, mimetype="application/json")
         else:
             return Response(error_message_helper("Only Admins may delete users!"), 401, mimetype="application/json")
+
+
+
+def test_unspecified_path()
