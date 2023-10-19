@@ -2,6 +2,8 @@
 **The Vulnerable API** *(Based on OpenAPI 3)*
 ![vampi](https://i.imgur.com/zR0quKf.jpg)
 
+[![Docker Image CI](https://github.com/erev0s/VAmPI/actions/workflows/docker-image.yml/badge.svg)](https://github.com/erev0s/VAmPI/actions/workflows/docker-image.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/erev0s/vampi)
+
 
 VAmPI is a vulnerable API made with Flask and it includes vulnerabilities from the OWASP top 10 vulnerabilities for APIs. It was created as I wanted a vulnerable API to evaluate the efficiency of tools used to detect security issues in APIs. It includes a switch on/off to allow the API to be vulnerable or not while testing. This allows to cover better the cases for false positives/negatives. VAmPI can also be used for learning/teaching purposes. You can find a bit more details about the vulnerabilities in [erev0s.com](https://erev0s.com/blog/vampi-vulnerable-api-security-testing/).
 
@@ -56,15 +58,9 @@ Or if you prefer you can also run it through docker or docker compose.
  #### Run it through Docker
 
  - Available in [Dockerhub](https://hub.docker.com/r/erev0s/vampi)
-
-**Build with**
 ~~~~
-docker build -t vampi_docker:latest .
+docker run -p 5000:5000 erev0s/vampi:latest
 ~~~~
- **and Run** *(remove the -d if you want to see the output in your terminal)*
- ~~~~
-docker run -d -p 5000:5000 vampi_docker:latest
- ~~~~
 
 [Note: if you run Docker on newer versions of the MacOS, use `-p 5001:5000` to avoid conflicting with the AirPlay Receiver service. Alternatively, you could disable the AirPlay Receiver service in your System Preferences -> Sharing settings.]
 
