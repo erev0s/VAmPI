@@ -42,21 +42,21 @@ jobs:
       - name: Push vulnerable image to docker hub
         run: docker push mathersb2j/vampi-vulnerable:latest
 
-  deployment:
-    needs: build
-    runs-on: self-hosted
-    steps:
-      # - name: Pull secure image
-      #   run: docker pull mathersb2j/vampi-secure:latest
-      - name: Pull vulnerable image
-        run: docker pull mathersb2j/vampi-vulnerable:latest
-      # - name: Delete old secure container
-      #   run: docker rm -f vampi-secure
-      - name: Delete old vulnerable container
-        run: docker rm -f vampi-vulnerable
-      # - name: Run secure docker container
-      #   run: docker run -d -p 5000:5000 --name vampi-secure mathersb2j/vampi-secure:latest
-      - name: Run vulnerable docker container
-        run: docker run -u root:root -d -p 5000:5000 --name vampi-vulnerable mathersb2j/vampi-vulnerable:latest
+  # deployment:
+  #   needs: build
+  #   runs-on: self-hosted
+  #   steps:
+  #     # - name: Pull secure image
+  #     #   run: docker pull mathersb2j/vampi-secure:latest
+  #     - name: Pull vulnerable image
+  #       run: docker pull mathersb2j/vampi-vulnerable:latest
+  #     # - name: Delete old secure container
+  #     #   run: docker rm -f vampi-secure
+  #     - name: Delete old vulnerable container
+  #       run: docker rm -f vampi-vulnerable
+  #     # - name: Run secure docker container
+  #     #   run: docker run -d -p 5000:5000 --name vampi-secure mathersb2j/vampi-secure:latest
+  #     - name: Run vulnerable docker container
+  #       run: docker run -u root:root -d -p 5000:5000 --name vampi-vulnerable mathersb2j/vampi-vulnerable:latest
 
 
