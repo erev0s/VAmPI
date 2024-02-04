@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "vampi"
+version = "0.1.0"
+description = ""
+authors = ["Mislav Perić <mislavperic32@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+connexion = "2.14.2"
+flask = "2.2.2"
+flask-sqlalchemy = "3.0.3"
+jsonschema = "4.17.3"
+sqlalchemy = "2.0.2"
+swagger-ui-bundle = "^1.1.0"
+pyjwt = "2.6.0"
+markupsafe = "2.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

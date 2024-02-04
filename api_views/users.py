@@ -38,7 +38,7 @@ def register_user():
         try:
             # validate the data are in the correct form
             jsonschema.validate(request_data, register_user_schema)
-            if vuln and 'admin' in request_data:  # User is possible to define if she/he wants to be an admin !!
+            if 'admin' in request_data:  # User is possible to define if she/he wants to be an admin !!
                 if request_data['admin']:
                     admin = True
                 else:
@@ -79,14 +79,10 @@ def login_user():
                 'auth_token': auth_token
             }
             return Response(json.dumps(responseObject), 200, mimetype="application/json")
-        if vuln:  # Password Enumeration
-            if user and request_data.get('password') != user.password:
-                return Response(error_message_helper("Password is not correct for the given username."), 200, mimetype="application/json")
-            elif not user:  # User enumeration
-                return Response(error_message_helper("Username does not exist"), 200, mimetype="application/json")
-        else:
-            if (user and request_data.get('password') != user.password) or (not user):
-                return Response(error_message_helper("Username or Password Incorrect!"), 200, mimetype="application/json")
+        if user and request_data.get('password') != user.password:
+            return Response(error_message_helper("Password is not correct for the given username."), 200, mimetype="application/json")
+        elif not user:  # User enumeration
+            return Response(error_message_helper("Username does not exist"), 200, mimetype="application/json")
     except jsonschema.exceptions.ValidationError as exc:
         return Response(error_message_helper(exc.message), 400, mimetype="application/json")
     except:
@@ -121,39 +117,22 @@ def update_email(username):
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
         user = User.query.filter_by(username=resp).first()
-        if vuln:  # Regex DoS
-            match = re.search(
+        match = re.search(
                 r"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@{1}([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$",
                 str(request_data.get('email')))
-            if match:
-                user.email = request_data.get('email')
-                db.session.commit()
-                responseObject = {
+        if match:
+            user.email = request_data.get('email')
+            db.session.commit()
+            responseObject = {
                     'status': 'success',
                     'data': {
                         'username': user.username,
                         'email': user.email
                     }
                 }
-                return Response(json.dumps(responseObject), 204, mimetype="application/json")
-            else:
-                return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
+            return Response(json.dumps(responseObject), 204, mimetype="application/json")
         else:
-            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-            if (re.search(regex, request_data.get('email'))):
-                user.email = request_data.get('email')
-                db.session.commit()
-                responseObject = {
-                    'status': 'success',
-                    'data': {
-                        'username': user.username,
-                        'email': user.email
-                    }
-                }
-                return Response(json.dumps(responseObject), 204, mimetype="application/json")
-            else:
-                return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
-
+             return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
 
 
 def update_password(username):
@@ -165,22 +144,12 @@ def update_password(username):
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
         if request_data.get('password'):
-            if vuln:  # Unauthorized update of password of another user
-                user = User.query.filter_by(username=username).first()
-                if user:
-                    user.password = request_data.get('password')
-                    db.session.commit()
-                else:
-                    return Response(error_message_helper("User Not Found"), 400, mimetype="application/json")
-            else:
-                user = User.query.filter_by(username=resp).first()
+            user = User.query.filter_by(username=username).first()
+            if user:
                 user.password = request_data.get('password')
                 db.session.commit()
-            responseObject = {
-                'status': 'success',
-                'Password': 'Updated.'
-            }
-            return Response(json.dumps(responseObject), 204, mimetype="application/json")
+            else:
+                return Response(error_message_helper("User Not Found"), 400, mimetype="application/json")
         else:
             return Response(error_message_helper("Malformed Data"), 400, mimetype="application/json")
 
