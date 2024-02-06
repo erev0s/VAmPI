@@ -69,14 +69,8 @@ class User(db.Model):
 
     @staticmethod
     def get_user(username):
-        user_query = f"SELECT * FROM users WHERE username = '{username}'"
-        query = db.session.execute(text(user_query))
-        ret = query.fetchone()
-        if ret:
-           fin_query = '{"username": "%s", "email": "%s"}' % (ret[1], ret[3])
-        else:
-            fin_query = None
-        return fin_query
+        sanitized = ''.join(char for char in username if char.isalnum() or char == '_')
+        return User.query.filter_by(username=sanitized).first()
 
     @staticmethod
     def register_user(username, password, email, admin=False):
