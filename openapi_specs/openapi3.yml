@@ -227,16 +227,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    username:
-                      type: string
-                      example: 'John.Doe'
-                    email:
-                      type: string
-                      example: 'user@tempmail.com'
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: 'John.Doe'
+                  email:
+                    type: string
+                    example: 'user@tempmail.com'
         '404':
           description: User not found
           content:
