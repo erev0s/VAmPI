@@ -7,6 +7,7 @@ from models.books_model import Book
 from random import randrange
 from sqlalchemy.sql import text
 
+
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
@@ -45,17 +46,17 @@ class User(db.Model):
     def decode_auth_token(auth_token):
         try:
             payload = jwt.decode(auth_token, vuln_app.app.config.get('SECRET_KEY'), algorithms=["HS256"])
-            return payload['sub']
+            return payload
         except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
+            return {'error': 'Signature expired. Please log in again.'}
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
+            return {'error': 'Invalid token. Please log in again.'}
 
     def json(self):
-        return{'username': self.username, 'email': self.email}
+        return {'username': self.username, 'email': self.email}
 
     def json_debug(self):
-        return{'username': self.username, 'password': self.password, 'email': self.email, 'admin': self.admin}
+        return {'username': self.username, 'password': self.password, 'email': self.email, 'admin': self.admin}
 
     @staticmethod
     def get_all_users():

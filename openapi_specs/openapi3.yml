@@ -5,7 +5,13 @@ info:
   version: '0.1'
 servers:
   - url: http://localhost:5000
-components: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: models.user_model.User.decode_auth_token
 paths:
   /createdb:
     get:
@@ -127,17 +133,17 @@ paths:
               properties:
                 username:
                   type: string
-                  example: 'John.Doe'
+                  example: 'name1'
                 password:
                   type: string
-                  example: 'password123'
+                  example: 'pass1'
                 email:
                   type: string
                   example: 'user@tempmail.com'
         required: true
       responses:
         '200':
-          description: Sucessfully created user
+          description: Successfully created user
           content:
             application/json:
               schema:
@@ -169,10 +175,10 @@ paths:
               properties:
                 username:
                   type: string
-                  example: 'John.Doe'
+                  example: 'name1'
                 password:
                   type: string
-                  example: 'password123'
+                  example: 'pass1'
         required: true
       responses:
         '200':
@@ -220,7 +226,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 'John.Doe'
+            example: 'name1'
       responses:
         '200':
           description: Successfully display user info
@@ -231,10 +237,10 @@ paths:
                 properties:
                   username:
                     type: string
-                    example: 'John.Doe'
+                    example: 'name1'
                   email:
                     type: string
-                    example: 'user@tempmail.com'
+                    example: 'mail1@mail.com'
         '404':
           description: User not found
           content:
@@ -251,6 +257,8 @@ paths:
                     example: 'User not found'
 
     delete:
+      security:
+        - bearerAuth: [ ]
       tags:
         - users
       summary: Deletes user by username (Only Admins)
@@ -266,7 +274,7 @@ paths:
             example: 'name1'
       responses:
         '200':
-          description: Sucessfully deleted user
+          description: Successfully deleted user
           content:
             application/json:
               schema:
@@ -309,6 +317,8 @@ paths:
                     example: 'User not found!'
   /users/v1/{username}/email:
     put:
+      security:
+        - bearerAuth: [ ]
       tags:
         - users
       summary: Update users email
@@ -335,7 +345,7 @@ paths:
         required: true
       responses:
         '204':
-          description: Sucessfully updated user email
+          description: Successfully updated user email
           content: {}
         '400':
           description: Invalid request
@@ -364,9 +374,11 @@ paths:
                     example: 'fail'
                   message:
                     type: string
-                    example: 'Invalid Token'
+                    example: 'Invalid token. Please log in again.'
   /users/v1/{username}/password:
     put:
+      security:
+        - bearerAuth: [ ]
       tags:
         - users
       summary: Update users password
@@ -393,7 +405,7 @@ paths:
         required: true
       responses:
         '204':
-          description: Sucessfully updated users password
+          description: Successfully updated users password
           content: {}
         '400':
           description: Invalid request
@@ -422,7 +434,7 @@ paths:
                     example: 'fail'
                   message:
                     type: string
-                    example: 'Invalid Token'
+                    example: 'Invalid token. Please log in again.'
   /books/v1:
     get:
       tags:
@@ -456,6 +468,8 @@ paths:
                   - book_title: 'bookTitle47'
                     user: 'admin'
     post:
+      security:
+        - bearerAuth: [ ]
       tags:
         - books
       summary: Add new book
@@ -479,7 +493,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Sucessfully added a book
+          description: Successfully added a book
           content:
             application/json:
               schema:
@@ -519,9 +533,11 @@ paths:
                     example: 'fail'
                   message:
                     type: string
-                    example: 'Invalid Token'
+                    example: 'Invalid token. Please log in again.'
   /books/v1/{book_title}:
     get:
+      security:
+        - bearerAuth: [ ]
       tags:
         - books
       summary: Retrieves book by title along with secret
@@ -569,7 +585,7 @@ paths:
                     example: 'fail'
                   message:
                     type: string
-                    example: 'Invalid Token'
+                    example: 'Invalid token. Please log in again.'
         '404':
           description: Book not found
           content:

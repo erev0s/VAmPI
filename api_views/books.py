@@ -1,16 +1,12 @@
 import jsonschema
 
-from api_views.users import token_validator
+from api_views.users import token_validator, error_message_helper
 from config import db
 from api_views.json_schemas import *
 from flask import jsonify, Response, request, json
 from models.user_model import User
 from models.books_model import Book
 from app import vuln
-
-
-def error_message_helper(msg):
-    return '{ "status": "fail", "message": "' + msg + '"}'
 
 
 def get_all_books():
@@ -25,12 +21,10 @@ def add_new_book():
     except:
         return Response(error_message_helper("Please provide a proper JSON body."), 400, mimetype="application/json")
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
+    if "error" in resp:
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
-        user = User.query.filter_by(username=resp).first()
+        user = User.query.filter_by(username=resp['sub']).first()
 
         # check if user already has this book title
         book = Book.query.filter_by(user=user, book_title=request_data.get('book_title')).first()
@@ -50,9 +44,7 @@ def add_new_book():
 
 def get_by_title(book_title):
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
+    if "error" in resp:
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
         if vuln:  # Broken Object Level Authorization
@@ -67,7 +59,7 @@ def get_by_title(book_title):
             else:
                 return Response(error_message_helper("Book not found!"), 404, mimetype="application/json")
         else:
-            user = User.query.filter_by(username=resp).first()
+            user = User.query.filter_by(username=resp['sub']).first()
             book = Book.query.filter_by(user=user, book_title=str(book_title)).first()
             if book:
                 responseObject = {
