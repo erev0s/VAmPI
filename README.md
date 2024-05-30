@@ -35,7 +35,7 @@ A quick rundown of the actions included can be seen in the following table:
 |    POST    |           /books/v1           |                    Add new book                    |
 |     GET    |        /books/v1/{book}       |      Retrieves book by title along with secret     |
 
-For more details you can use a service like the [swagger editor](https://editor.swagger.io) supplying it the OpenAPI specification which can be found in the directory `openapi_specs`.
+For more details you can either run VAmPI and visit `http://127.0.0.1:5000/ui/` or use a service like the [swagger editor](https://editor.swagger.io) supplying the OpenAPI specification which can be found in the directory `openapi_specs`.
 
 
 #### List of Vulnerabilities
@@ -71,7 +71,7 @@ docker run -p 5000:5000 erev0s/vampi:latest
 docker-compose up -d
 ~~~~
 
-## Available Swagger UI
+## Available Swagger UI :rocket:
 Visit the path `/ui` where you are running the API and a Swagger UI will be available to help you get started!
 ~~~~
 http://127.0.0.1:5000/ui/
