@@ -10,7 +10,10 @@ from app import vuln
 
 
 def error_message_helper(msg):
-    return '{ "status": "fail", "message": "' + msg + '"}'
+    if isinstance(msg, dict):
+        return '{ "status": "fail", "message": "' + msg['error'] + '"}'
+    else:
+        return '{ "status": "fail", "message": "' + msg + '"}'
 
 
 def get_all_users():
@@ -81,12 +84,14 @@ def login_user():
             return Response(json.dumps(responseObject), 200, mimetype="application/json")
         if vuln:  # Password Enumeration
             if user and request_data.get('password') != user.password:
-                return Response(error_message_helper("Password is not correct for the given username."), 200, mimetype="application/json")
+                return Response(error_message_helper("Password is not correct for the given username."), 200,
+                                mimetype="application/json")
             elif not user:  # User enumeration
                 return Response(error_message_helper("Username does not exist"), 200, mimetype="application/json")
         else:
             if (user and request_data.get('password') != user.password) or (not user):
-                return Response(error_message_helper("Username or Password Incorrect!"), 200, mimetype="application/json")
+                return Response(error_message_helper("Username or Password Incorrect!"), 200,
+                                mimetype="application/json")
     except jsonschema.exceptions.ValidationError as exc:
         return Response(error_message_helper(exc.message), 400, mimetype="application/json")
     except:
@@ -105,7 +110,7 @@ def token_validator(auth_header):
         # if auth_token is valid we get back the username of the user
         return User.decode_auth_token(auth_token)
     else:
-        return "Invalid token"
+        return {'error': 'Invalid token. Please log in again.'}
 
 
 def update_email(username):
@@ -115,12 +120,10 @@ def update_email(username):
     except:
         return Response(error_message_helper("Please provide a proper JSON body."), 400, mimetype="application/json")
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
+    if "error" in resp:
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
-        user = User.query.filter_by(username=resp).first()
+        user = User.query.filter_by(username=resp['sub']).first()
         if vuln:  # Regex DoS
             match = re.search(
                 r"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@{1}([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$",
@@ -137,7 +140,8 @@ def update_email(username):
                 }
                 return Response(json.dumps(responseObject), 204, mimetype="application/json")
             else:
-                return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
+                return Response(error_message_helper("Please Provide a valid email address."), 400,
+                                mimetype="application/json")
         else:
             regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
             if (re.search(regex, request_data.get('email'))):
@@ -152,16 +156,14 @@ def update_email(username):
                 }
                 return Response(json.dumps(responseObject), 204, mimetype="application/json")
             else:
-                return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
-
+                return Response(error_message_helper("Please Provide a valid email address."), 400,
+                                mimetype="application/json")
 
 
 def update_password(username):
     request_data = request.get_json()
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
+    if "error" in resp:
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
         if request_data.get('password'):
@@ -173,7 +175,7 @@ def update_password(username):
                 else:
                     return Response(error_message_helper("User Not Found"), 400, mimetype="application/json")
             else:
-                user = User.query.filter_by(username=resp).first()
+                user = User.query.filter_by(username=resp['sub']).first()
                 user.password = request_data.get('password')
                 db.session.commit()
             responseObject = {
@@ -185,16 +187,12 @@ def update_password(username):
             return Response(error_message_helper("Malformed Data"), 400, mimetype="application/json")
 
 
-
-
 def delete_user(username):
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
+    if "error" in resp:
         return Response(error_message_helper(resp), 401, mimetype="application/json")
     else:
-        user = User.query.filter_by(username=resp).first()
+        user = User.query.filter_by(username=resp['sub']).first()
         if user.admin:
             if bool(User.delete_user(username)):
                 responseObject = {
