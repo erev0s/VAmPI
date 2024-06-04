@@ -47,6 +47,7 @@ For more details you can either run VAmPI and visit `http://127.0.0.1:5000/ui/` 
  - User and Password Enumeration
  - RegexDOS (Denial of Service)
  - Lack of Resources & Rate Limiting
+ - JWT authentication bypass via weak signing key
 
 
 
