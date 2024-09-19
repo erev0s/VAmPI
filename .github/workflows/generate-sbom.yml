@@ -23,7 +23,7 @@ jobs:
           sudo mv syft /usr/local/bin/
 
       - name: Generate SBOM
-        run: syft ./path/to/your/project -o json > sbom.json
+        run: syft ./VAmPI -o json > sbom.json
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v2
