@@ -1,0 +1,32 @@
+name: Generate SBOM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+
+      - name: Install Syft
+        run: |
+          curl -sSL https://github.com/anchore/syft/releases/latest/download/syft_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m).tar.gz | tar xz
+          sudo mv syft /usr/local/bin/
+
+      - name: Generate SBOM
+        run: syft ./path/to/your/project -o json > sbom.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v2
+        with:
+          name: sbom
+          path: sbom.json
