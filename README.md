@@ -23,6 +23,7 @@ A quick rundown of the actions included can be seen in the following table:
 |:----------:|:-----------------------------:|:--------------------------------------------------:|
 |     GET    |           /createdb           | Creates and populates the database with dummy data |
 |     GET    |               /               |                     VAmPI home                     |
+|     GET    |               /me             |           Displays the user that is logged in       |
 |     GET    |           /users/v1           |      Displays all users with basic information     |
 |     GET    |        /users/v1/_debug       |         Displays all details for all users         |
 |    POST    |       /users/v1/register      |                  Register new user                 |

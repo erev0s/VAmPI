@@ -256,7 +256,7 @@
 				"description": "Displays all users with basic information"
 			},
 			"response": []
-		}
+		},
 		{
 			"name": "Retrieves all details for all users (debug)",
 			"event": [
