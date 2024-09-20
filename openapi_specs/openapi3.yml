@@ -212,6 +212,44 @@ paths:
                   message:
                     type: string
                     example: 'Password is not correct for the given username.'
+  /me:
+    get:
+        tags:
+          - users
+        summary: Retrieves currently logged in user
+        description: Displays information about the currently authenticated user
+        operationId: api_views.users.me
+        security:
+          - bearerAuth: []  # Assuming bearer token authentication is used
+        responses:
+          '200':
+            description: Successfully display user info
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      example: 'current_user'
+                    email:
+                      type: string
+                      example: 'current_user@mail.com'
+          '401':
+            description: Invalid or missing authorization header
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum: ['fail']
+                      example: 'fail'
+                    message:
+                      type: string
+                      example: 'Unauthorized access, please provide valid credentials'
+
   /users/v1/{username}:
     get:
       tags:

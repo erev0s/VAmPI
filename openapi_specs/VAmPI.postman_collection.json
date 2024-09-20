@@ -159,6 +159,68 @@
 			]
 		},
 		{
+			"name": "Retrieves currently logged in user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"me"
+					]
+				},
+				"description": "Displays user by username"
+			},
+			"response": [
+				{
+					"name": "Retrieves currently logged in user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
 			"name": "Retrieves all users",
 			"event": [
 				{
@@ -194,7 +256,7 @@
 				"description": "Displays all users with basic information"
 			},
 			"response": []
-		},
+		}
 		{
 			"name": "Retrieves all details for all users (debug)",
 			"event": [
