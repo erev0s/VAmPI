@@ -29,6 +29,6 @@ jobs:
       # Run the "semgrep ci" command on the command line of the docker image.
       - run: semgrep scan --config=auto . --sarif --output=semgrep-report.sarif
       # Загружаем SARIF отчёт
-        uses: github/codeql-action/upload-sarif@v2
+      - uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: semgrep-report.sarif
