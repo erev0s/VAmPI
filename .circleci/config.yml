@@ -1,37 +1,58 @@
-# This config was automatically generated from your source code
-# Stacks detected: cicd:github-actions:.github/workflows,deps:python:.
 version: 2.1
-orbs:
-  python: circleci/python@2
+
+env:
+  ACTIVE_API_URL: "<ACTIVE_API_URL>"
+  ACTIVE_REGISTRY_URL: "<ACTIVE_REGISTRY_URL>"
+  ACTIVE_BACKEND_URI: "<ACTIVE_BACKEND_URI>"
+
 jobs:
-  test-python:
-    # Install dependencies and run tests
+  scan:
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/base:stable 
     steps:
       - checkout
-      - python/install-packages
+
+      # Start your local server
       - run:
-          name: Run tests
-          command: pytest --junitxml=junit.xml || ((($? == 5)) && echo 'Did not find any tests to run.')
-      - store_test_results:
-          path: junit.xml
+          name: Start Local Server
+          command: |
+            docker-compose -f docker-compose.yml up -d
+
+      # Docker login
+      - run:
+          name: Docker Login
+          command: |
+            echo $ACTIVE_REGISTRY_PASSWORD | docker login $ACTIVE_REGISTRY_URL -u $ACTIVE_REGISTRY_USER --password-stdin
+
+      # Run Active Testing Scan
+      - run:
+          name: Active Testing Scan
+          command: |
+            docker run \
+              --add-host=host.docker.internal:host-gateway \
+              -e ACTIVE_CONFIG_FILE_PATH=<PATH_TO_ACTIVE_CONFIG_FILE> \
+              -e ACTIVE_BACKEND_URI=$ACTIVE_BACKEND_URI \
+              -v $(pwd)/noname:<ACTIVE_CONFIG_FILE_DIR> \
+              $ACTIVE_REGISTRY_URL/active-cli:$(curl -k $ACTIVE_API_URL/backend/version) scan \
+              --api-url=$ACTIVE_API_URL \
+              --api-token=$ACTIVE_API_TOKEN \
+              --test-group-id=<TEST_GROUP_ID> \
+              --branch-name=$CIRCLE_BRANCH \
+              --severity-threshold=<SEVERITY_THRESHOLD>
+
   deploy:
-    # This is an example deploy job, not actually used by the workflow
     docker:
       - image: cimg/base:stable
     steps:
-      # Replace this with steps to deploy to users
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
-      - run:
-          name: found github actions config
-          command: ':'
+          name: Deploy
+          command: echo "Security scan passed, deploying to production"
+
 workflows:
-  build-and-test:
+  version: 2
+  scan_and_deploy:
     jobs:
-      - test-python
-    # - deploy:
-    #     requires:
-    #       - test-python
+      - scan
+      - deploy:
+          requires:
+            - scan
