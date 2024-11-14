@@ -12,6 +12,10 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Check Directory Structure
+          command: ls -R
+      
       # Start your local server using docker-compose in the root directory
       - run:
           name: Start Local Server
