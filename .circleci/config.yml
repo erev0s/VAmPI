@@ -9,19 +9,21 @@ jobs:
   scan:
     docker:
       - image: cimg/base:stable
-    working_directory: ~/project/VAmPI
     steps:
       - checkout
 
+      # Start your local server using docker-compose in the root directory
       - run:
           name: Start Local Server
           command: docker-compose -f docker-compose.yml up -d
 
+      # Docker login
       - run:
           name: Docker Login
           command: |
             echo $ACTIVE_REGISTRY_PASSWORD | docker login $ACTIVE_REGISTRY_URL -u $ACTIVE_REGISTRY_USER --password-stdin
 
+      # Run Active Testing Scan
       - run:
           name: Active Testing Scan
           command: |
@@ -30,7 +32,7 @@ jobs:
               -e ACTIVE_CONFIG_FILE_PATH=<PATH_TO_ACTIVE_CONFIG_FILE> \
               -e ACTIVE_BACKEND_URI=$ACTIVE_BACKEND_URI \
               -v $(pwd)/noname:<ACTIVE_CONFIG_FILE_DIR> \
-              $ACTIVE_REGISTRY_URL/active-cli:latest scan \
+              $ACTIVE_REGISTRY_URL/active-cli:$(curl -k $ACTIVE_API_URL/backend/version) scan \
               --api-url=$ACTIVE_API_URL \
               --api-token=$ACTIVE_API_TOKEN \
               --test-group-id=<TEST_GROUP_ID> \
