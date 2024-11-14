@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Start Local Server
           command: |
-            docker-compose -f docker-compose.yml up -d
+            docker-compose -f VAmPI/docker-compose.yml up -d
 
       # Docker login
       - run:
