@@ -1,6 +1,6 @@
 FROM python:3.11-alpine as builder
 RUN apk --update add bash nano g++
-COPY . /vampi
+COPY ./requirements.txt /vampi/requirements.txt
 WORKDIR /vampi
 RUN pip install -r requirements.txt
 

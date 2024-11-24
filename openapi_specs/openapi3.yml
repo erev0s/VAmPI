@@ -212,6 +212,54 @@ paths:
                   message:
                     type: string
                     example: 'Password is not correct for the given username.'
+  /me:
+    get:
+        security:
+          - bearerAuth: []
+        tags:
+          - users
+        summary: Retrieves currently logged in user
+        description: Displays information about the currently authenticated user
+        operationId: api_views.users.me
+        responses:
+          '200':
+            description: Display current user info
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        admin:
+                          type: boolean
+                          example: false
+                        email:
+                          type: string
+                          example: 'mail1@mail.com'
+                        username:
+                          type: string
+                          example: 'name1'
+                    status:
+                      type: string
+                      example: 'success'
+          '401':
+            description: Unauthorized access due to expired, invalid, or missing token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: 'fail'
+                    message:
+                      type: string
+                      enum:
+                        - 'Signature expired. Please log in again.'
+                        - 'Invalid token. Please log in again.'
+
   /users/v1/{username}:
     get:
       tags:
