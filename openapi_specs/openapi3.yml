@@ -214,29 +214,38 @@ paths:
                     example: 'Password is not correct for the given username.'
   /me:
     get:
+        security:
+          - bearerAuth: []
         tags:
           - users
         summary: Retrieves currently logged in user
         description: Displays information about the currently authenticated user
         operationId: api_views.users.me
-        security:
-          - bearerAuth: []  # Assuming bearer token authentication is used
         responses:
           '200':
-            description: Successfully display user info
+            description: Display current user info
             content:
               application/json:
                 schema:
                   type: object
                   properties:
-                    username:
+                    data:
+                      type: object
+                      properties:
+                        admin:
+                          type: boolean
+                          example: false
+                        email:
+                          type: string
+                          example: 'mail1@mail.com'
+                        username:
+                          type: string
+                          example: 'name1'
+                    status:
                       type: string
-                      example: 'current_user'
-                    email:
-                      type: string
-                      example: 'current_user@mail.com'
+                      example: 'success'
           '401':
-            description: Invalid or missing authorization header
+            description: Unauthorized access due to expired, invalid, or missing token
             content:
               application/json:
                 schema:
@@ -244,11 +253,12 @@ paths:
                   properties:
                     status:
                       type: string
-                      enum: ['fail']
                       example: 'fail'
                     message:
                       type: string
-                      example: 'Unauthorized access, please provide valid credentials'
+                      enum:
+                        - 'Signature expired. Please log in again.'
+                        - 'Invalid token. Please log in again.'
 
   /users/v1/{username}:
     get:

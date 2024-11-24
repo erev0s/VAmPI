@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "07b56784-02d4-47a0-9bcd-03b5bc52f8dd",
+		"_postman_id": "2b4774dd-b3fb-4a63-81f4-353643bbb641",
 		"name": "VAmPI",
 		"description": "OpenAPI v3 specs for VAmPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10538030"
 	},
 	"item": [
 		{
@@ -151,72 +152,10 @@
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
+					"_postman_previewlanguage": "Text",
+					"header": [],
 					"cookie": [],
-					"body": null
-				}
-			]
-		},
-		{
-			"name": "Retrieves currently logged in user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					}
-				],
-				"url": {
-					"raw": "{{baseUrl}}/me",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"me"
-					]
-				},
-				"description": "Displays user by username"
-			},
-			"response": [
-				{
-					"name": "Retrieves currently logged in user",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"me"
-							]
-						}
-					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"body": null
+					"body": ""
 				}
 			]
 		},
@@ -421,8 +360,8 @@
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
+					"_postman_previewlanguage": "Text",
+					"header": [],
 					"cookie": [],
 					"body": "{\n    \"message\": \"Successfully registered. Login to receive an auth token.\",\n    \"status\": \"success\"\n}"
 				}
@@ -521,8 +460,8 @@
 					},
 					"status": "OK",
 					"code": 200,
-					"_postman_previewlanguage": null,
-					"header": null,
+					"_postman_previewlanguage": "Text",
+					"header": [],
 					"cookie": [],
 					"body": "{\n    \"status\": \"fail\",\n    \"message\": \"Password is not correct for the given username.\"\n}"
 				},
@@ -563,12 +502,59 @@
 					},
 					"status": "OK",
 					"code": 200,
-					"_postman_previewlanguage": null,
-					"header": null,
+					"_postman_previewlanguage": "Text",
+					"header": [],
 					"cookie": [],
 					"body": "{\n    \"status\": \"fail\",\n    \"message\": \"Username does not exist\"\n}"
 				}
 			]
+		},
+		{
+			"name": "Retrieves currently logged in user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"me"
+					]
+				},
+				"description": "Displays user by username"
+			},
+			"response": []
 		},
 		{
 			"name": "Add new book",
@@ -806,10 +792,10 @@
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
+					"_postman_previewlanguage": "Text",
+					"header": [],
 					"cookie": [],
-					"body": null
+					"body": ""
 				}
 			]
 		},
@@ -924,10 +910,10 @@
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
+					"_postman_previewlanguage": "Text",
+					"header": [],
 					"cookie": [],
-					"body": null
+					"body": ""
 				}
 			]
 		},
