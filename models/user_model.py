@@ -1,12 +1,17 @@
 import datetime
 import jwt
+import os
 from sqlalchemy.orm import relationship
 from config import db, vuln_app
 from app import vuln, alive
 from models.books_model import Book
-from random import randrange
+from random import randrange, seed
 from sqlalchemy.sql import text
 
+rand_seed = os.getenv('RAND_SEED')
+if rand_seed is not None:
+    # Initialize the random seed if RAND_SEED is provided
+    seed(int(rand_seed))
 
 class User(db.Model):
     __tablename__ = 'users'
