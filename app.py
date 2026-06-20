@@ -12,7 +12,7 @@ vuln = int(os.getenv('vulnerable', 1))
 alive = int(os.getenv('tokentimetolive', 60))
 # default to original 5000 but make easy to use a different one when running standalone
 # example `export port=5050; python3 app.py`
-port = int(os.getenv('port', 5000)
+port = int(os.getenv('port', 5000))
 
 # start the app with port 5000 (unless explicitly overridden) and debug on!
 if __name__ == '__main__':
