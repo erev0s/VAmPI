@@ -10,6 +10,7 @@ import threading
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from wsgiref.simple_server import WSGIRequestHandler, make_server
@@ -195,6 +196,15 @@ class BolaLabHttpTests(unittest.TestCase):
         self.prepare("S01")
         with self.assertRaises(StartupError):
             create_app(str(self.state_dir))
+
+    def test_failed_app_initialization_releases_startup_lock(self) -> None:
+        initialize_run(str(self.state_dir), "S01", 120)
+        with patch("bola_lab.server.Flask", side_effect=RuntimeError("injected startup failure")):
+            with self.assertRaises(StartupError):
+                create_app(str(self.state_dir))
+        self.assertFalse(state_path(self.state_dir, "lock").exists())
+        app = create_app(str(self.state_dir))
+        app.extensions["bola_lab_release_lock"]()
 
 
 if __name__ == "__main__":

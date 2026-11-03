@@ -1,8 +1,8 @@
 FROM python:3.11-alpine
 
 WORKDIR /bola-lab
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.bola-lab.txt ./
+RUN pip install --no-cache-dir -r requirements.bola-lab.txt
 COPY bola_lab ./bola_lab
 COPY bola_lab_app.py ./
 

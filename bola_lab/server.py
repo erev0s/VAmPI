@@ -104,71 +104,74 @@ def create_app(state_dir_text: str | None = None) -> Flask:
     except StateError as exc:
         raise StartupError("The prepared lab state cannot be used.") from exc
 
-    app = Flask(__name__)
-    app.config.update(JSON_AS_ASCII=False, PROPAGATE_EXCEPTIONS=False)
-    app.logger.handlers.clear()
-    app.logger.addHandler(logging.NullHandler())
+    try:
+        app = Flask(__name__)
+        app.config.update(JSON_AS_ASCII=False, PROPAGATE_EXCEPTIONS=False)
+        app.logger.handlers.clear()
+        app.logger.addHandler(logging.NullHandler())
 
-    def release_lock() -> None:
+        def release_lock() -> None:
+            lock.unlink(missing_ok=True)
+
+        @app.before_request
+        def authenticate() -> Response | None:
+            if request.path == "/health":
+                return None
+            header = request.headers.get("Authorization", "")
+            if not header.startswith("Bearer "):
+                return _json_response({"error": "unauthorized"}, 401)
+            try:
+                payload = verify_token(header.removeprefix("Bearer "), manifest["signing_secret"])
+                principal = fetch_principal(state_dir, payload["sub"])
+                if principal is None:
+                    raise TokenError("Unknown principal")
+            except TokenError:
+                return _json_response({"error": "unauthorized"}, 401)
+            g.principal = principal
+            return None
+
+        @app.get("/health")
+        def health() -> Response:
+            return _json_response({"status": "ready"})
+
+        @app.get("/me")
+        def me() -> Response:
+            return _json_response({"principal": {"username": g.principal["username"], "role": g.principal["role"]}})
+
+        @app.get("/books/<book_id>")
+        def get_book(book_id: str) -> Response:
+            target = fetch_book(state_dir, book_id)
+            if target is None:
+                return _json_response({"error": "not_found"}, 404)
+            principal = g.principal["username"]
+            authorized = target["owner"] == principal or is_shared_with(state_dir, book_id, principal)
+            if authorized:
+                return _json_response(full_resource(target))
+
+            # S11 includes a denial control whose equal-length body is deliberately
+            # returned only to admin, whose experiment policy is declared UNKNOWN.
+            if scenario.code == "S11" and principal == "admin":
+                return _json_response(_balanced_denial(target), 403)
+
+            alternate = fetch_first_owned_book(state_dir, principal)
+            payload, status = serialize_unauthorized(scenario, target, alternate)
+            # S10's B2 response intentionally lacks the observed resource ID, so
+            # marker attribution cannot be proven from the allowed public evidence.
+            if scenario.code == "S10" and target["id"] == "book-B2":
+                payload = {"data": {"title": target["title"], "secret": target["secret"]}, "evidence": {"source": "unattributed"}}
+            return _json_response(payload, status)
+
+        @app.errorhandler(404)
+        def not_found(_: Exception) -> Response:
+            return _json_response({"error": "not_found"}, 404)
+
+        @app.errorhandler(Exception)
+        def internal_error(_: Exception) -> Response:
+            return _json_response({"error": "service_unavailable"}, 500)
+    except Exception as exc:
         lock.unlink(missing_ok=True)
+        raise StartupError("Unable to initialize the public lab application.") from exc
 
     atexit.register(release_lock)
     app.extensions["bola_lab_release_lock"] = release_lock
-
-    @app.before_request
-    def authenticate() -> Response | None:
-        if request.path == "/health":
-            return None
-        header = request.headers.get("Authorization", "")
-        if not header.startswith("Bearer "):
-            return _json_response({"error": "unauthorized"}, 401)
-        try:
-            payload = verify_token(header.removeprefix("Bearer "), manifest["signing_secret"])
-            principal = fetch_principal(state_dir, payload["sub"])
-            if principal is None:
-                raise TokenError("Unknown principal")
-        except TokenError:
-            return _json_response({"error": "unauthorized"}, 401)
-        g.principal = principal
-        return None
-
-    @app.get("/health")
-    def health() -> Response:
-        return _json_response({"status": "ready"})
-
-    @app.get("/me")
-    def me() -> Response:
-        return _json_response({"principal": {"username": g.principal["username"], "role": g.principal["role"]}})
-
-    @app.get("/books/<book_id>")
-    def get_book(book_id: str) -> Response:
-        target = fetch_book(state_dir, book_id)
-        if target is None:
-            return _json_response({"error": "not_found"}, 404)
-        principal = g.principal["username"]
-        authorized = target["owner"] == principal or is_shared_with(state_dir, book_id, principal)
-        if authorized:
-            return _json_response(full_resource(target))
-
-        # S11 includes a denial control whose equal-length body is deliberately
-        # returned only to admin, whose experiment policy is declared UNKNOWN.
-        if scenario.code == "S11" and principal == "admin":
-            return _json_response(_balanced_denial(target), 403)
-
-        alternate = fetch_first_owned_book(state_dir, principal)
-        payload, status = serialize_unauthorized(scenario, target, alternate)
-        # S10's B2 response intentionally lacks the observed resource ID, so
-        # marker attribution cannot be proven from the allowed public evidence.
-        if scenario.code == "S10" and target["id"] == "book-B2":
-            payload = {"data": {"title": target["title"], "secret": target["secret"]}, "evidence": {"source": "unattributed"}}
-        return _json_response(payload, status)
-
-    @app.errorhandler(404)
-    def not_found(_: Exception) -> Response:
-        return _json_response({"error": "not_found"}, 404)
-
-    @app.errorhandler(Exception)
-    def internal_error(_: Exception) -> Response:
-        return _json_response({"error": "service_unavailable"}, 500)
-
     return app

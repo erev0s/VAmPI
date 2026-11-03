@@ -67,13 +67,23 @@ Each initialization regenerates bearer tokens and secret markers. Resource IDs a
 
 ## Start the isolated service
 
+The BOLA lab has a dedicated dependency set. It supports current Python releases independently of VAmPI's pinned legacy stack: do **not** install [`requirements.txt`](../requirements.txt) into this environment. That file remains exclusively for the original VAmPI application.
+
 ```bash
-BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=0.0.0.0 BOLA_LAB_PORT=5003 python3 bola_lab_app.py
+python3 -m venv .venv-bola-lab
+```
+
+```bash
+. .venv-bola-lab/bin/activate && python -m pip install -r requirements.bola-lab.txt
+```
+
+```bash
+BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=0.0.0.0 BOLA_LAB_PORT=5003 python bola_lab_app.py
 ```
 
 The application logs, errors, `/health`, and other public responses contain no scenario identifier, controller secret, issued token, private answer, or marker values unless a scenario intentionally discloses a resource secret through the tested resource endpoint.
 
-Docker is optional and does not change upstream images or services. Prepare the named volume using a one-off local controller container **before** starting the public service:
+Docker is optional and does not change upstream images or services. [`Dockerfile.bola-lab`](../Dockerfile.bola-lab) supplies its own Python 3.11 runtime and installs only `requirements.bola-lab.txt`, so the container does not use the host Python version, host virtual environments, or VAmPI's legacy dependencies. Prepare the named volume using a one-off local controller container **before** starting the public service:
 
 ```bash
 docker compose -f docker-compose.lab.yaml run --rm --no-deps bola-lab python -m bola_lab.controller --state-dir /var/lib/bola-lab --scenario S01 --token-ttl 3600 init
@@ -167,12 +177,14 @@ Use the account/resource list and policy from the private `operator-config.json`
 
 Run source and integration checks:
 
+After activating the dedicated `.venv-bola-lab` environment above:
+
 ```bash
-python3 -m compileall -q bola_lab bola_lab_app.py tests
+python -m compileall -q bola_lab bola_lab_app.py tests
 ```
 
 ```bash
-python3 -m unittest discover -s tests -v
+python -W error::ResourceWarning -m unittest discover -s tests -v
 ```
 
 The integration suite starts a real local WSGI HTTP server and covers all S01-S12, owner controls, `/me`, invalid/expired tokens, S03 body leakage, masking, wrong-object truthfulness, sharing, S10 ambiguity, S11 UTF-8 byte equality, file modes, live-reset refusal, startup lock behavior, reset isolation, and attempts to fetch private/control paths over HTTP.
