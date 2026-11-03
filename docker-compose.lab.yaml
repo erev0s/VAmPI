@@ -1,0 +1,18 @@
+services:
+  bola-lab:
+    build:
+      context: .
+      dockerfile: Dockerfile.bola-lab
+    environment:
+      BOLA_LAB_STATE_DIR: /var/lib/bola-lab
+      BOLA_LAB_HOST: 0.0.0.0
+      BOLA_LAB_PORT: 5003
+    ports:
+      - "${BOLA_LAB_PUBLISH_ADDRESS:-0.0.0.0}:${BOLA_LAB_PUBLISH_PORT:-5003}:5003"
+    volumes:
+      - bola-lab-state:/var/lib/bola-lab
+    restart: "no"
+
+volumes:
+  bola-lab-state:
+    name: ${BOLA_LAB_VOLUME_NAME:-vampi_bola-lab-state}

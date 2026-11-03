@@ -90,6 +90,10 @@ If you would like to alter the timeout of the token created after login or if yo
    - In the Dockerfile you will find two environment variables being set, the `ENV vulnerable=1` and the `ENV tokentimetolive=60`. Feel free to change it before running the docker build command.
 
 
+## Controlled BOLA evaluation lab
+
+An opt-in, separately deployed Flask service for repeatable BOLA-evaluation experiments is available without changing the original VAmPI application. See [the controlled lab guide](docs/bola-lab.md) for private controller setup, the public OpenAPI contract, scenarios, tests, and two-machine operation.
+
 ## Frequently asked questions
  - **There is a database error upon reaching endpoints!**
    - Make sure to issue a request towards the endpoint `/createdb` in order to populate the database.

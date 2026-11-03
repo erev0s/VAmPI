@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Controlled Resource Evaluation API",
+    "version": "1.0.0",
+    "description": "A GET-only API for controlled authorization-evaluation experiments."
+  },
+  "servers": [{"url": "http://LAB_HOST:5003"}],
+  "components": {
+    "securitySchemes": {"bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "Bearer"}},
+    "schemas": {
+      "Principal": {"type": "object", "required": ["username", "role"], "properties": {"username": {"type": "string"}, "role": {"type": "string"}}},
+      "Book": {"type": "object", "required": ["id", "owner", "title"], "properties": {"id": {"type": "string"}, "owner": {"type": "string"}, "title": {"type": "string"}, "secret": {"type": "string", "nullable": true}}},
+      "BookEnvelope": {"type": "object", "properties": {"data": {"oneOf": [{"$ref": "#/components/schemas/Book"}, {"type": "null"}]}, "result": {"type": "string"}}},
+      "Error": {"type": "object", "required": ["error"], "properties": {"error": {"type": "string"}}}
+    }
+  },
+  "paths": {
+    "/health": {"get": {"summary": "Read service readiness", "responses": {"200": {"description": "Service is ready", "content": {"application/json": {"schema": {"type": "object", "properties": {"status": {"type": "string"}}}}}}}}},
+    "/me": {"get": {"summary": "Read the authenticated principal", "security": [{"bearerAuth": []}], "responses": {"200": {"description": "Authenticated principal", "content": {"application/json": {"schema": {"type": "object", "properties": {"principal": {"$ref": "#/components/schemas/Principal"}}}}}}, "401": {"description": "Bearer token is missing, invalid, or expired", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}}}},
+    "/books/{book_id}": {"get": {"summary": "Read one resource", "security": [{"bearerAuth": []}], "parameters": [{"name": "book_id", "in": "path", "required": true, "schema": {"type": "string"}}], "responses": {"200": {"description": "A response may contain a resource, a denial representation, or no data.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/BookEnvelope"}}}}, "202": {"description": "An alternate successful response representation", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/BookEnvelope"}}}}, "401": {"description": "Bearer token is missing, invalid, or expired", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}, "403": {"description": "A response rejected at the transport layer", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/BookEnvelope"}}}}, "404": {"description": "Resource does not exist", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}}}}
+  }
+}
