@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API đánh giá resource có kiểm soát",
+    "version": "1.0.0",
+    "description": "API chỉ có GET dành cho các thí nghiệm đánh giá authorization có kiểm soát."
+  },
+  "servers": [{"url": "http://LAB_HOST:5003"}],
+  "components": {
+    "securitySchemes": {"bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "Bearer"}},
+    "schemas": {
+      "Principal": {"type": "object", "required": ["username", "role"], "properties": {"username": {"type": "string"}, "role": {"type": "string"}}},
+      "Book": {"type": "object", "required": ["id", "owner", "title"], "properties": {"id": {"type": "string"}, "owner": {"type": "string"}, "title": {"type": "string"}, "secret": {"type": "string", "nullable": true}}},
+      "BookEnvelope": {"type": "object", "properties": {"data": {"oneOf": [{"$ref": "#/components/schemas/Book"}, {"type": "null"}]}, "result": {"type": "string"}}},
+      "Error": {"type": "object", "required": ["error"], "properties": {"error": {"type": "string"}}}
+    }
+  },
+  "paths": {
+    "/health": {"get": {"summary": "Đọc trạng thái sẵn sàng của service", "responses": {"200": {"description": "Service đã sẵn sàng", "content": {"application/json": {"schema": {"type": "object", "properties": {"status": {"type": "string"}}}}}}}}},
+    "/me": {"get": {"summary": "Đọc principal đã xác thực", "security": [{"bearerAuth": []}], "responses": {"200": {"description": "Principal đã xác thực", "content": {"application/json": {"schema": {"type": "object", "properties": {"principal": {"$ref": "#/components/schemas/Principal"}}}}}}, "401": {"description": "Bearer token bị thiếu, không hợp lệ hoặc đã hết hạn", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}}}},
+    "/books/{book_id}": {"get": {"summary": "Đọc một resource", "security": [{"bearerAuth": []}], "parameters": [{"name": "book_id", "in": "path", "required": true, "schema": {"type": "string"}}], "responses": {"200": {"description": "Response có thể chứa resource, biểu diễn từ chối hoặc không có dữ liệu.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/BookEnvelope"}}}}, "202": {"description": "Biểu diễn response thành công thay thế", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/BookEnvelope"}}}}, "401": {"description": "Bearer token bị thiếu, không hợp lệ hoặc đã hết hạn", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}, "403": {"description": "Response bị từ chối tại transport layer", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/BookEnvelope"}}}}, "404": {"description": "Resource không tồn tại", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}}}}
+  }
+}

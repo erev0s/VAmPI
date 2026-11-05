@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: VAmPI
-  description: OpenAPI v3 specs for VAmPI
+  description: Đặc tả OpenAPI v3 cho VAmPI
   version: '0.1'
 servers:
   - url: http://localhost:5000
@@ -17,8 +17,8 @@ paths:
     get:
       tags:
         - db-init
-      summary: Creates and populates the database with dummy data
-      description: Creates and populates the database with dummy data
+      summary: Tạo và nạp database bằng dữ liệu mẫu
+      description: Tạo và nạp database bằng dữ liệu mẫu
       operationId: api_views.main.populate_db
       responses:
         '200':
@@ -37,10 +37,9 @@ paths:
         - home
       summary: VAmPI home
       description: >-
-        VAmPI is a vulnerable on purpose API. It was created in order to
-        evaluate the efficiency of third party tools in identifying
-        vulnerabilities in APIs but it can also be used in learning/teaching
-        purposes.
+        VAmPI là API có chủ đích chứa lỗ hổng. Dự án dùng để đánh giá hiệu
+        quả của công cụ bên thứ ba trong việc nhận diện lỗ hổng API và cũng
+        phù hợp cho mục đích học tập/giảng dạy.
       operationId: api_views.main.basic
       responses:
         '200':
@@ -63,8 +62,8 @@ paths:
     get:
       tags:
         - users
-      summary: Retrieves all users
-      description: Displays all users with basic information
+      summary: Lấy tất cả user
+      description: Hiển thị thông tin cơ bản của tất cả user
       operationId: api_views.users.get_all_users
       responses:
         '200':
@@ -89,8 +88,8 @@ paths:
     get:
       tags:
         - users
-      summary: Retrieves all details for all users
-      description: Displays all details for all users
+      summary: Lấy toàn bộ chi tiết của tất cả user
+      description: Hiển thị toàn bộ chi tiết của tất cả user
       operationId: api_views.users.debug
       responses:
         '200':
@@ -121,8 +120,8 @@ paths:
     post:
       tags:
         - users
-      summary: Register new user
-      description: Register new user
+      summary: Đăng ký user mới
+      description: Đăng ký user mới
       operationId: api_views.users.register_user
       requestBody:
         description: Username of the user
@@ -163,8 +162,8 @@ paths:
     post:
       tags:
         - users
-      summary: Login to VAmPI
-      description: Login to VAmPI
+      summary: Đăng nhập VAmPI
+      description: Đăng nhập VAmPI
       operationId: api_views.users.login_user
       requestBody:
         description: Username of the user
@@ -218,8 +217,8 @@ paths:
           - bearerAuth: []
         tags:
           - users
-        summary: Retrieves currently logged in user
-        description: Displays information about the currently authenticated user
+        summary: Lấy user đang đăng nhập
+        description: Hiển thị thông tin của user đang được xác thực
         operationId: api_views.users.me
         responses:
           '200':
@@ -264,8 +263,8 @@ paths:
     get:
       tags:
         - users
-      summary: Retrieves user by username
-      description: Displays user by username
+      summary: Lấy user theo username
+      description: Hiển thị user theo username
       operationId: api_views.users.get_by_username
       parameters:
         - name: username
@@ -309,8 +308,8 @@ paths:
         - bearerAuth: [ ]
       tags:
         - users
-      summary: Deletes user by username (Only Admins)
-      description: Deletes user by username (Only Admins)
+      summary: Xóa user theo username (chỉ admin)
+      description: Xóa user theo username (chỉ admin)
       operationId: api_views.users.delete_user
       parameters:
         - name: username
@@ -369,8 +368,8 @@ paths:
         - bearerAuth: [ ]
       tags:
         - users
-      summary: Update users email
-      description: Update a single users email
+      summary: Cập nhật email user
+      description: Cập nhật email của một user
       operationId: api_views.users.update_email
       parameters:
         - name: username
@@ -429,8 +428,8 @@ paths:
         - bearerAuth: [ ]
       tags:
         - users
-      summary: Update users password
-      description: Update users password
+      summary: Cập nhật mật khẩu user
+      description: Cập nhật mật khẩu user
       operationId: api_views.users.update_password
       parameters:
         - name: username
@@ -487,8 +486,8 @@ paths:
     get:
       tags:
         - books
-      summary: Retrieves all books
-      description: Retrieves all books
+      summary: Lấy tất cả book
+      description: Lấy tất cả book
       operationId: api_views.books.get_all_books
       responses:
         '200':
@@ -520,8 +519,8 @@ paths:
         - bearerAuth: [ ]
       tags:
         - books
-      summary: Add new book
-      description: Add new book
+      summary: Thêm book mới
+      description: Thêm book mới
       operationId: api_views.books.add_new_book
       requestBody:
         description: >-
@@ -588,10 +587,10 @@ paths:
         - bearerAuth: [ ]
       tags:
         - books
-      summary: Retrieves book by title along with secret
+      summary: Lấy book theo title cùng secret
       description: >-
-        Retrieves book by title along with secret. Only the owner may retrieve
-        it
+        Lấy book theo title cùng secret. Chỉ owner mới được phép lấy dữ liệu
+        này
       operationId: api_views.books.get_by_title
       parameters:
         - name: book_title

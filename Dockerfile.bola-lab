@@ -1,0 +1,11 @@
+FROM python:3.11-alpine
+
+WORKDIR /bola-lab
+COPY requirements.bola-lab.txt ./
+RUN pip install --no-cache-dir -r requirements.bola-lab.txt
+COPY bola_lab ./bola_lab
+COPY bola_lab_app.py ./
+
+ENV BOLA_LAB_PORT=5003
+EXPOSE 5003
+CMD ["python", "bola_lab_app.py"]
