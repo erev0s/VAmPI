@@ -69,6 +69,14 @@ python3 -m bola_lab.controller --state-dir "$PWD/bola-lab-state" validate
 
 Mỗi lần khởi tạo tạo bearer token và secret marker mới. Resource ID và authorization semantics vẫn deterministic. Chỉ S10 cố ý dùng chung secret marker cho cặp `book-B1`/`book-B2`.
 
+BOLA Lab không có password authentication cho principal. Operator có thể xem account/role cục bộ mà không in token:
+
+```bash
+python -m bola_lab.operator_accounts --state-dir "$PWD/bola-lab-state" list
+```
+
+Chỉ trong terminal Machine B được bảo vệ, operator mới dùng `show-token <username>` để in một bearer token hiện hành. Lệnh này chủ động cảnh báo về terminal scrollback/log; không dùng token output trong chat, commit hoặc script.
+
 ## Khởi động service độc lập
 
 BOLA Lab có dependency riêng. Nó hỗ trợ Python hiện hành độc lập với legacy stack được pin của VAmPI: **không** cài [`requirements.txt`](../requirements.txt) vào environment này. File đó chỉ dành cho VAmPI gốc.
@@ -82,8 +90,18 @@ python3 -m venv .venv-bola-lab
 ```
 
 ```bash
-BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=0.0.0.0 BOLA_LAB_PORT=5003 python bola_lab_app.py
+BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=127.0.0.1 BOLA_LAB_PORT=5003 python bola_lab_app.py
 ```
+
+Launcher mặc định bind loopback. Để phục vụ nhiều client LAN, operator phải đặt rõ **một IP LAN của Machine B** và `BOLA_LAB_ALLOWED_CLIENTS` gồm các IPv4/IPv6 host hoặc CIDR được chấp thuận, ví dụ:
+
+```bash
+BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=192.168.10.10 BOLA_LAB_PORT=5003 BOLA_LAB_ALLOWED_CLIENTS="192.168.10.20,192.168.10.21,2001:db8:10::20" python bola_lab_app.py
+```
+
+Unset allowlist chỉ chấp nhận loopback; loopback luôn được giữ cho operator local. Empty/malformed/wildcard/duplicate hoặc CIDR quá rộng làm service fail closed. App dùng riêng TCP peer address, không tin `Forwarded`, `X-Forwarded-For` hay `X-Real-IP`, và từ chối client LAN ngoài allowlist bằng neutral `404 {"error":"not_found"}` trước `/health`, authentication và scenario routing. Vì thế mọi client được phép giữ nguyên semantics S01–S12.
+
+Firewall trên Machine B là lớp kiểm soát chính. Chỉ permit đúng IP client tới interface/port đã chọn; không tự động thay đổi firewall. Với Docker Engine, đừng mặc định UFW `INPUT` rule bảo vệ published port vì Docker có thể chuyển lưu lượng qua NAT/FORWARD chain. Xác minh bằng kết nối thật từ một client allowed và một client denied, bao gồm IPv6 nếu publish IPv6.
 
 Application log, error, `/health` và các public response khác không chứa scenario identifier, controller secret, issued token, private answer hay marker trừ khi một scenario cố ý disclosure secret resource qua endpoint resource đang được kiểm thử.
 
@@ -97,7 +115,9 @@ docker compose -f docker-compose.lab.yaml run --rm --no-deps bola-lab python -m 
 docker compose -f docker-compose.lab.yaml up --build
 ```
 
-Controller điều chỉnh volume directory về mode `0700` trước khi ghi state. Đặt `BOLA_LAB_PUBLISH_ADDRESS` và, khi cần, `BOLA_LAB_PUBLISH_PORT` theo interface/port mạng lab thay vì public service quá rộng. `BOLA_LAB_VOLUME_NAME` chọn named volume riêng cho isolated trial. Chỉ container port `5003` là data-plane port. Không publish operator state directory, controller shell hoặc reset service.
+Controller điều chỉnh volume directory về mode `0700` trước khi ghi state. Compose mặc định publish `127.0.0.1:5003`; để mở LAN, đặt `BOLA_LAB_PUBLISH_ADDRESS` thành **địa chỉ LAN cụ thể của Machine B**, không phải `0.0.0.0`, và export `BOLA_LAB_ALLOWED_CLIENTS` trước khi chạy Compose. `BOLA_LAB_VOLUME_NAME` chọn named volume riêng cho isolated trial. Chỉ container port `5003` là data-plane port. Không publish operator state directory, controller shell hoặc reset service.
+
+Docker networking có thể làm peer address trong container khác IP gốc của Machine A, nhất là Docker Desktop, proxy hoặc NAT tùy biến. Không allow Docker gateway và không tin forwarding header để vượt qua hạn chế đó. Xác minh source IP thực tế bằng hai LAN client trước khi coi app allowlist là có hiệu lực; nếu không bảo toàn source IP, giữ loopback publish hoặc chạy direct process với đường mạng/firewall bảo toàn source IP. Firewall host vẫn phải enforce client restriction trên Docker backend/NAT path thực tế.
 
 Để chạy acceptance không phá hủy dữ liệu, dùng Compose project, loopback port và volume name riêng:
 

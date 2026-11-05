@@ -11,6 +11,7 @@ from typing import Any
 
 from flask import Flask, Response, g, request
 
+from .network import NetworkPolicyError, parse_allowed_clients
 from .scenarios import full_resource, scenario_for, serialize_unauthorized
 from .storage import (
     StateError,
@@ -100,8 +101,9 @@ def create_app(state_dir_text: str | None = None) -> Flask:
             if not state_path(state_dir, name).is_file():
                 raise StartupError("The prepared lab state is incomplete.")
         scenario = scenario_for(manifest["scenario"])
+        access_policy = parse_allowed_clients(os.environ.get("BOLA_LAB_ALLOWED_CLIENTS"))
         lock = _acquire_lock(state_dir)
-    except StateError as exc:
+    except (NetworkPolicyError, StateError) as exc:
         raise StartupError("The prepared lab state cannot be used.") from exc
 
     try:
@@ -112,6 +114,14 @@ def create_app(state_dir_text: str | None = None) -> Flask:
 
         def release_lock() -> None:
             lock.unlink(missing_ok=True)
+
+        @app.before_request
+        def admit_client() -> Response | None:
+            # Use only the TCP peer address. Client-supplied forwarding headers
+            # are intentionally ignored because no trusted proxy is configured.
+            if not access_policy.allows(request.remote_addr):
+                return _json_response({"error": "not_found"}, 404)
+            return None
 
         @app.before_request
         def authenticate() -> Response | None:

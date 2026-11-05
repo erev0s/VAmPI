@@ -7,8 +7,10 @@ services:
       BOLA_LAB_STATE_DIR: /var/lib/bola-lab
       BOLA_LAB_HOST: 0.0.0.0
       BOLA_LAB_PORT: 5003
+      BOLA_LAB_CONTAINER_MODE: "1"
+      BOLA_LAB_ALLOWED_CLIENTS:
     ports:
-      - "${BOLA_LAB_PUBLISH_ADDRESS:-0.0.0.0}:${BOLA_LAB_PUBLISH_PORT:-5003}:5003"
+      - "${BOLA_LAB_PUBLISH_ADDRESS:-127.0.0.1}:${BOLA_LAB_PUBLISH_PORT:-5003}:5003"
     volumes:
       - bola-lab-state:/var/lib/bola-lab
     restart: "no"

@@ -61,6 +61,20 @@ Controller tạo SQLite và các file owner-only (`0700` cho thư mục, `0600` 
 
 Sau `init` hoặc `reset`, controller in một tóm tắt local-only gồm principal/resource đã seed và đường dẫn tuyệt đối đến artifact private: `lab.sqlite3` (database), `operator-config.json` (pointer, identity/resource và policy), `issued-tokens.json` (bearer token), `active-run.json` (manifest) và `answer-sheet.json` (ground truth). Tóm tắt **không** in bearer token, signing secret, marker, run ID hoặc nội dung answer sheet. Sau `reset`, token và marker cũ đã bị thay thế nên không còn hợp lệ.
 
+### Xem account và token cục bộ
+
+BOLA Lab không dùng password authentication. Mỗi principal chỉ có `username`/`role`; controller tạo bearer token riêng cho từng run. Để xem danh sách account mà **không** in token, chạy trên Machine B:
+
+```bash
+python -m bola_lab.operator_accounts --state-dir "$PWD/bola-lab-state" list
+```
+
+Để xem token của một account trong terminal operator được bảo vệ, dùng lệnh explicit sau. Lệnh sẽ cảnh báo qua `stderr`; không chạy lệnh này trong terminal được log/chia sẻ và không dán token vào chat, Git hoặc script:
+
+```bash
+python -m bola_lab.operator_accounts --state-dir "$PWD/bola-lab-state" show-token userA
+```
+
 ### Token
 
 Operator lấy token từ state private **chỉ qua kênh được bảo vệ**. Khi test thủ công, dùng placeholder sau và thay bằng token được cấp; không ghi giá trị token vào shell history, script, commit hoặc log:
@@ -83,7 +97,36 @@ Sau `init`/`validate`, chạy service ở Machine B:
 BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=127.0.0.1 BOLA_LAB_PORT=5003 python bola_lab_app.py
 ```
 
-Dùng `BOLA_LAB_HOST=0.0.0.0` chỉ khi Machine A cần truy cập qua một interface mạng lab đã được phê duyệt. Không thay scenario khi process đang chạy. Dừng process bằng `Ctrl+C` trước khi reset.
+Mặc định launcher chỉ bind `127.0.0.1`; Machine A trên LAN không thể kết nối khi operator chưa cấu hình rõ ràng. Không thay scenario khi process đang chạy. Dừng process bằng `Ctrl+C` trước khi reset.
+
+### Mở có kiểm soát cho nhiều client LAN
+
+Firewall trên **Machine B** là lớp chặn chính; application allowlist chỉ là defense in depth. Chỉ mở một địa chỉ LAN cụ thể của Machine B và chỉ khai báo các IP/CIDR client cần thiết. `BOLA_LAB_ALLOWED_CLIENTS` nhận danh sách phân tách bằng dấu phẩy gồm IPv4, IPv6, `/32`/`/128` host hoặc CIDR hẹp (IPv4 tối thiểu `/24`, IPv6 tối thiểu `/64`). Biến không được khai báo nghĩa là chỉ loopback; giá trị rỗng, wildcard, malformed, duplicate hoặc mạng quá rộng làm service từ chối khởi động.
+
+Ví dụ với Machine B `192.168.10.10`, Machine A `192.168.10.20` và Machine C `192.168.10.21`:
+
+```bash
+BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=192.168.10.10 BOLA_LAB_PORT=5003 BOLA_LAB_ALLOWED_CLIENTS="192.168.10.20,192.168.10.21,2001:db8:10::20" python bola_lab_app.py
+```
+
+Không dùng `0.0.0.0` hoặc `::` cho direct process. Allowlist luôn giữ loopback cho operator local và kiểm tra duy nhất địa chỉ TCP peer (`request.remote_addr`) trước `/health`, authentication và scenario routing; nó bỏ qua hoàn toàn `Forwarded`, `X-Forwarded-For` và `X-Real-IP`. Mọi client **LAN** ngoài allowlist luôn nhận neutral `404 {"error":"not_found"}`; response không tiết lộ token, state hoặc scenario.
+
+Cấu hình firewall bằng backend thực tế của Machine B để chỉ cho phép các IP đó tới **đúng địa chỉ/port publish**. Không coi một UFW `INPUT` rule đơn thuần là đủ với Docker Engine: Docker có thể xử lý published port qua NAT/FORWARD chain. Xác minh rule thực tế trên host bằng một client được phép và một client bị từ chối; không tự động thêm rule firewall từ lab.
+
+### Docker và giới hạn nguồn IP
+
+Compose mặc định publish `127.0.0.1:5003`, không mở LAN. Khi dùng Docker cho LAN, operator phải đặt rõ `BOLA_LAB_PUBLISH_ADDRESS` bằng địa chỉ LAN của Machine B và export `BOLA_LAB_ALLOWED_CLIENTS` trước `docker compose`; container vẫn bind `0.0.0.0` nội bộ để Docker forward port:
+
+```bash
+export BOLA_LAB_PUBLISH_ADDRESS=192.168.10.10
+```
+
+```bash
+export BOLA_LAB_ALLOWED_CLIENTS="192.168.10.20,192.168.10.21"
+```
+
+Không giả định Docker bridge, Docker Desktop, reverse proxy hoặc NAT giữ nguyên client source IP. Không allow Docker gateway thay cho allowlist client và không bật trust forwarding headers như một workaround. Nếu runtime thực tế làm `request.remote_addr` thành gateway/proxy address, application allowlist không thể chứng minh danh tính Machine A: giữ publish loopback hoặc chạy direct process trên Machine B với firewall/L3 path bảo toàn source IP, cho đến khi thiết kế một trusted-proxy boundary riêng. Thử Docker từ ít nhất hai host LAN và kiểm tra IPv6/direct-routing trước khi ghi nhận isolation PASS.
+
 
 Kiểm tra readiness từ một terminal khác:
 
