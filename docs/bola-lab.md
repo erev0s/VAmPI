@@ -1,24 +1,26 @@
 # Controlled BOLA evaluation lab
 
-## Purpose and upstream separation
+Để xem hướng dẫn vận hành từng bước bằng tiếng Việt, bao gồm user được controller tạo sẵn, API public và manual test case S01–S12, xem [hướng dẫn operator tiếng Việt](bola-lab-operator-guide.vi.md).
 
-This repository now includes an **opt-in, independently deployable Flask service** for controlled BOLA evaluation. It does not import, modify, or share persistence with VAmPI's original `app.py`, `config.py`, models, routes, database, or OpenAPI document. The recorded upstream baseline is the Git commit written into each private answer sheet by the controller.
+## Mục đích và tách biệt với upstream
 
-The original VAmPI service remains the comparison target. The lab is started only through [`bola_lab_app.py`](../bola_lab_app.py) after private state has been prepared locally.
+Repository này có một **Flask service opt-in, triển khai độc lập** để đánh giá BOLA có kiểm soát. Nó không import, sửa đổi hoặc dùng chung persistence với `app.py`, `config.py`, models, routes, database hoặc OpenAPI của VAmPI gốc. Controller ghi Git commit baseline upstream vào từng answer sheet private.
 
-## Public data-plane contract
+VAmPI gốc vẫn là đối tượng so sánh. Lab chỉ được khởi động bằng [`bola_lab_app.py`](../bola_lab_app.py) sau khi private state được chuẩn bị tại chỗ.
 
-The lab intentionally exposes only these routes:
+## Hợp đồng public data-plane
 
-| Route | Auth | Stable response pointers |
+Lab chỉ public các route sau:
+
+| Route | Auth | Response pointer ổn định |
 | --- | --- | --- |
-| `GET /health` | no | neutral `{"status":"ready"}` only |
+| `GET /health` | không | chỉ trả neutral `{"status":"ready"}` |
 | `GET /me` | bearer | principal: `/principal/username` |
 | `GET /books/{book_id}` | bearer | resource ID: `/data/id`; restricted field: `/data/secret` |
 
-The public specification is [`openapi_specs/bola-lab.openapi.json`](../openapi_specs/bola-lab.openapi.json). It is invariant across scenarios and deliberately omits scenario names, markers, ground truth, token values, controller routes, and reset functions.
+Public specification là [`openapi_specs/bola-lab.openapi.json`](../openapi_specs/bola-lab.openapi.json). Nó không đổi giữa các scenario và cố ý không chứa tên scenario, marker, ground truth, token, controller route hoặc reset function.
 
-The normal book form is:
+Dạng book thông thường:
 
 ```json
 {
@@ -31,11 +33,11 @@ The normal book form is:
 }
 ```
 
-Some experiments intentionally use a null/masked/public-only/wrong-resource or alternate-form response. The returned `data.id`, when present, always identifies the resource actually returned; it is never relabeled to look like the requested resource.
+Một số experiment cố ý dùng response null/masked/public-only/wrong-resource hoặc alternate form. Khi có `data.id`, giá trị này luôn định danh resource thực sự được trả; nó không bị gắn nhãn lại để giống resource đã yêu cầu.
 
-## Private controller and reproducibility
+## Controller private và khả năng tái lập
 
-The controller is local-only Python code, not an HTTP API. Choose a fresh directory accessible only to the lab operator:
+Controller là Python code chỉ chạy local, không phải HTTP API. Chọn một thư mục mới chỉ operator lab có quyền truy cập:
 
 ```bash
 mkdir -m 700 bola-lab-state
@@ -45,15 +47,17 @@ mkdir -m 700 bola-lab-state
 python3 -m bola_lab.controller --state-dir "$PWD/bola-lab-state" --scenario S01 --token-ttl 3600 init
 ```
 
-It creates owner-only (`0700` directory; `0600` files), atomically written files:
+Controller tạo các file atomic, owner-only (`0700` cho thư mục; `0600` cho file):
 
-- `active-run.json`: immutable-at-startup run configuration and signing secret;
-- `lab.sqlite3`: principals, resources, actual owners, and shares;
-- `issued-tokens.json`: operator-supplied bearer tokens;
-- `operator-config.json`: pointers and policy input with no marker values or answer;
-- `answer-sheet.json`: evaluator-only ground truth and accepted outcomes.
+- `active-run.json`: run configuration immutable-at-startup và signing secret;
+- `lab.sqlite3`: principal, resource, actual owner và share;
+- `issued-tokens.json`: bearer token do operator cấp;
+- `operator-config.json`: pointer và policy input, không có marker hoặc đáp án;
+- `answer-sheet.json`: ground truth và accepted outcome chỉ dành cho evaluator.
 
-Never copy the state directory or these files to the tool machine. They are ignored by Git if created at the repository root. The controller rejects resets or scenario changes while the server lock names a live process. The service reads and validates the manifest once at boot, locks the run atomically, and does not observe later configuration-file modifications. Stop the process before reset:
+Sau `init` hoặc `reset`, controller in ra local-only summary gồm principal/resource đã seed, đường dẫn tuyệt đối tới các artifact trên và bước `validate`/khởi động service tiếp theo. Tóm tắt cố ý **không** in bearer token, signing secret, marker, run ID hay nội dung answer sheet. Token phải được lấy cục bộ từ `issued-tokens.json` bằng quy trình protected-channel của operator; không copy file này hoặc cả state directory sang máy chạy tool.
+
+Khi `reset` thành công, controller nêu rõ token bearer và marker cũ đã được thay thế nên token cũ không còn hợp lệ. Chúng được Git ignore nếu tạo tại repository root. Controller từ chối reset hoặc đổi scenario khi server lock chỉ process đang chạy. Service chỉ đọc/validate manifest một lần khi boot, lock run bằng atomic operation và không quan sát thay đổi file config về sau. Dừng process trước khi reset:
 
 ```bash
 python3 -m bola_lab.controller --state-dir "$PWD/bola-lab-state" --scenario S04 --token-ttl 3600 reset
@@ -63,11 +67,11 @@ python3 -m bola_lab.controller --state-dir "$PWD/bola-lab-state" --scenario S04 
 python3 -m bola_lab.controller --state-dir "$PWD/bola-lab-state" validate
 ```
 
-Each initialization regenerates bearer tokens and secret markers. Resource IDs and authorization semantics remain deterministic. S10 alone intentionally duplicates the `book-B1`/`book-B2` secret marker pair.
+Mỗi lần khởi tạo tạo bearer token và secret marker mới. Resource ID và authorization semantics vẫn deterministic. Chỉ S10 cố ý dùng chung secret marker cho cặp `book-B1`/`book-B2`.
 
-## Start the isolated service
+## Khởi động service độc lập
 
-The BOLA lab has a dedicated dependency set. It supports current Python releases independently of VAmPI's pinned legacy stack: do **not** install [`requirements.txt`](../requirements.txt) into this environment. That file remains exclusively for the original VAmPI application.
+BOLA Lab có dependency riêng. Nó hỗ trợ Python hiện hành độc lập với legacy stack được pin của VAmPI: **không** cài [`requirements.txt`](../requirements.txt) vào environment này. File đó chỉ dành cho VAmPI gốc.
 
 ```bash
 python3 -m venv .venv-bola-lab
@@ -81,9 +85,9 @@ python3 -m venv .venv-bola-lab
 BOLA_LAB_STATE_DIR="$PWD/bola-lab-state" BOLA_LAB_HOST=0.0.0.0 BOLA_LAB_PORT=5003 python bola_lab_app.py
 ```
 
-The application logs, errors, `/health`, and other public responses contain no scenario identifier, controller secret, issued token, private answer, or marker values unless a scenario intentionally discloses a resource secret through the tested resource endpoint.
+Application log, error, `/health` và các public response khác không chứa scenario identifier, controller secret, issued token, private answer hay marker trừ khi một scenario cố ý disclosure secret resource qua endpoint resource đang được kiểm thử.
 
-Docker is optional and does not change upstream images or services. [`Dockerfile.bola-lab`](../Dockerfile.bola-lab) supplies its own Python 3.11 runtime and installs only `requirements.bola-lab.txt`, so the container does not use the host Python version, host virtual environments, or VAmPI's legacy dependencies. Prepare the named volume using a one-off local controller container **before** starting the public service:
+Docker là tùy chọn và không thay đổi upstream image/service. [`Dockerfile.bola-lab`](../Dockerfile.bola-lab) cung cấp Python 3.11 runtime riêng và chỉ cài `requirements.bola-lab.txt`; container không dùng Python host, host virtual environment hoặc legacy dependency của VAmPI. Chuẩn bị named volume bằng one-off local controller container **trước** khi khởi động public service:
 
 ```bash
 docker compose -f docker-compose.lab.yaml run --rm --no-deps bola-lab python -m bola_lab.controller --state-dir /var/lib/bola-lab --scenario S01 --token-ttl 3600 init
@@ -93,17 +97,17 @@ docker compose -f docker-compose.lab.yaml run --rm --no-deps bola-lab python -m 
 docker compose -f docker-compose.lab.yaml up --build
 ```
 
-The controller corrects the volume directory to mode `0700` before writing state. Set `BOLA_LAB_PUBLISH_ADDRESS` and, when needed, `BOLA_LAB_PUBLISH_PORT` to the intended lab-network interface/port instead of exposing the service broadly. `BOLA_LAB_VOLUME_NAME` selects a separate named volume for an isolated trial. Only the container's port 5003 is a data-plane port. Do not publish the operator state directory, a controller shell, or a reset service.
+Controller điều chỉnh volume directory về mode `0700` trước khi ghi state. Đặt `BOLA_LAB_PUBLISH_ADDRESS` và, khi cần, `BOLA_LAB_PUBLISH_PORT` theo interface/port mạng lab thay vì public service quá rộng. `BOLA_LAB_VOLUME_NAME` chọn named volume riêng cho isolated trial. Chỉ container port `5003` là data-plane port. Không publish operator state directory, controller shell hoặc reset service.
 
-For a non-destructive acceptance run, use a separate Compose project, loopback port, and distinct volume name:
+Để chạy acceptance không phá hủy dữ liệu, dùng Compose project, loopback port và volume name riêng:
 
 ```bash
 BOLA_LAB_PUBLISH_ADDRESS=127.0.0.1 BOLA_LAB_PUBLISH_PORT=5503 BOLA_LAB_VOLUME_NAME=vampi-bola-acceptance-state docker compose -p vampi-bola-acceptance -f docker-compose.lab.yaml config
 ```
 
-This leaves the normal `vampi_bola-lab-state` volume untouched.
+Lệnh này không đụng đến volume `vampi_bola-lab-state` thông thường.
 
-Before reset, stop the service and prepare the next run with the same one-off controller command, replacing `init` with `reset`.
+Trước khi reset, dừng service rồi chuẩn bị lượt chạy tiếp theo bằng cùng one-off controller command, thay `init` bằng `reset`.
 
 ```bash
 docker compose -f docker-compose.lab.yaml down
@@ -113,13 +117,13 @@ docker compose -f docker-compose.lab.yaml down
 docker compose -f docker-compose.lab.yaml run --rm --no-deps bola-lab python -m bola_lab.controller --state-dir /var/lib/bola-lab --scenario S04 --token-ttl 3600 reset
 ```
 
-Use the one-off controller container only from Machine B's operator context; it prints no bearer token values. Read the owner-only token artifact locally through an approved protected channel when supplying a token to Machine A.
+Chỉ dùng one-off controller container trong operator context của Machine B; nó không in bearer token. Đọc token artifact owner-only tại chỗ qua protected channel được phê duyệt khi cấp token cho Machine A.
 
-## Data and policy
+## Dữ liệu và policy
 
-Each run seeds `admin`, `userA`, and `userB`, with `book-A1`, `book-A2`, `book-B1`, and `book-B2`. `books.owner` is the actual ownership record. The standard policy is owner access to private data, declared shared-reader access where configured, and public access to ID/owner/title only. Admin policy is `UNKNOWN` in the operator configuration except for the S11 measurement control.
+Mỗi run seed `admin`, `userA`, `userB`, cùng `book-A1`, `book-A2`, `book-B1`, `book-B2`. `books.owner` là ownership record thực tế. Policy chuẩn: owner được đọc private data; shared-reader được quyền tương đương khi có cấu hình share; public chỉ xem được ID/owner/title. Admin policy là `UNKNOWN` trong operator configuration, trừ S11 measurement control.
 
-The answer sheet is the authority for policy; it explicitly does **not** infer intended policy from server behavior. Every cross-user answer row records independent dimensions:
+Answer sheet là authority cho policy; nó rõ ràng **không** suy luận intended policy từ hành vi server. Mọi cross-user answer row ghi các chiều độc lập:
 
 - `authorization_allowed`
 - `private_data_disclosed`
@@ -128,30 +132,30 @@ The answer sheet is the authority for policy; it explicitly does **not** infer i
 - `acceptable_conclusions`
 - `evidence_requirements`
 
-HTTP status is transport evidence only. A 200 never proves authorization, and a 403 never proves that no private data was sent.
+HTTP status chỉ là transport evidence. `200` không bao giờ tự chứng minh authorization, và `403` không bao giờ tự chứng minh không có private data được gửi.
 
-### Scenario table
+### Bảng scenario
 
-| Case | Unauthorized read behavior | Evaluation point |
+| Case | Hành vi unauthorized read | Điểm đánh giá |
 | --- | --- | --- |
-| S01 | 200 with requested target and real secret | Confirm BOLA. |
-| S02 | 200 denial envelope, no secret | No confirmed disclosure; policy-consistent only if the supplied denial convention is known, otherwise insufficient evidence is acceptable. |
-| S03 | 403 with requested target and real secret | Confirm BOLA from the body despite 403. |
-| S04 | 403 denial envelope, no secret | Policy-consistent with denial convention and owner control. |
-| S05 | 200 with `data: null` | No disclosure; insufficient evidence is accepted. |
-| S06 | 200 public data with `secret: "***"` | A field key/mask is not a real marker disclosure. |
-| S07 | 200 with the requester’s own book | The returned ID truthfully differs from the requested target. Do not count it as disclosure of the target. |
-| S08 | 200 with B1 secret after B1 is shared to A | Cross-owner access is policy-consistent, not BOLA. |
-| S09 | 200 public ID/owner/title only | Different ownership alone is not a violation. |
-| S10 | Duplicate marker pair; B2 variant omits resource ID | Use all evidence. If source attribution is unavailable, `INSUFFICIENT_EVIDENCE` is acceptable. |
-| S11 | Leaking response and admin denial control have equal serialized UTF-8 byte lengths | Body length must not be the sole decision rule; compression is not enabled. |
-| S12 | 202 alternate body form with the same target data | Formatting/status differences do not negate demonstrated disclosure. |
+| S01 | `200` với target được yêu cầu và secret thật | Xác nhận BOLA. |
+| S02 | `200` denial envelope, không secret | Không có disclosure được xác nhận; chỉ policy-consistent khi biết denial convention, nếu không `INSUFFICIENT_EVIDENCE` được chấp nhận. |
+| S03 | `403` với target được yêu cầu và secret thật | Xác nhận BOLA từ body dù status là `403`. |
+| S04 | `403` denial envelope, không private data | Policy-consistent khi có denial convention và owner control. |
+| S05 | `200` với `data: null` | Không disclosure; `INSUFFICIENT_EVIDENCE` được chấp nhận. |
+| S06 | `200` public data với `secret: "***"` | Field key/mask không phải disclosure marker thật. |
+| S07 | `200` với book của chính requester | Returned ID khác target được yêu cầu một cách truthful; không tính là disclosure target. |
+| S08 | `200` với secret B1 sau khi share B1 cho A | Cross-owner access policy-consistent, không phải BOLA. |
+| S09 | `200` chỉ có public ID/owner/title | Khác ownership không tự tạo violation. |
+| S10 | Duplicate marker pair; B2 variant bỏ resource ID | Dùng toàn bộ evidence. Nếu không thể source attribution, `INSUFFICIENT_EVIDENCE` được chấp nhận. |
+| S11 | Leaking response và admin denial control có serialized UTF-8 byte length bằng nhau | Không dùng body length làm decision rule duy nhất; compression không bật. |
+| S12 | `202` alternate body form với target data tương tự | Khác format/status không phủ định disclosure đã chứng minh. |
 
-Owners receive the full resource in every scenario. Invalid or expired tokens receive neutral 401 responses.
+Owner luôn nhận full resource trong mọi scenario. Token invalid hoặc expired nhận neutral `401` response.
 
-## Manual tool input
+## Input thủ công cho tool
 
-Provide the external tool with only:
+Chỉ cung cấp cho external tool:
 
 ```json
 {
@@ -163,21 +167,21 @@ Provide the external tool with only:
 }
 ```
 
-Use the account/resource list and policy from the private `operator-config.json`; supply the denial convention only for the evaluation profile that declares it known. Do not give the tool the private answer sheet, marker values, scenario name, or controller artifacts.
+Dùng account/resource list và policy từ `operator-config.json`; chỉ cấp denial convention cho evaluation profile đã khai báo là biết convention. Không cấp answer sheet private, marker value, scenario name hoặc controller artifact cho tool.
 
-## Two-machine procedure
+## Quy trình hai máy
 
-1. **Machine B (lab)**: create a protected state directory; run `init` for one chosen scenario; validate it; start the lab on the approved lab-network interface and port.
-2. **Machine A (tool)**: set base URL to `http://MACHINE_B:5003`, import the public OpenAPI JSON, and enter a bearer token manually from the operator through a protected channel. Add only the documented pointers, identity/resource/policy configuration, and any declared denial convention.
-3. **Run**: keep the lab process and network path stable. Do not reset or change scenarios during the run.
-4. **After completion**: stop the lab on Machine B, inspect the private answer sheet locally, and compare allowed conclusions. The evaluator must not invoke the tool again to generate answers.
-5. **Between runs**: reset after the process exits, distribute new tokens, and start a new service process.
+1. **Machine B (lab)**: tạo protected state directory; chạy `init` cho một scenario; validate; khởi động lab trên interface/port mạng lab đã phê duyệt.
+2. **Machine A (tool)**: đặt base URL `http://MACHINE_B:5003`, import public OpenAPI JSON và nhập bearer token thủ công từ operator qua protected channel. Chỉ thêm pointer, identity/resource/policy configuration đã tài liệu hóa và denial convention nếu có.
+3. **Chạy**: giữ ổn định lab process và network path. Không reset hoặc đổi scenario trong lúc chạy.
+4. **Sau khi hoàn tất**: dừng lab ở Machine B, xem private answer sheet cục bộ và so sánh accepted conclusion. Evaluator không gọi tool lại để tạo đáp án.
+5. **Giữa các run**: reset sau khi process kết thúc, cấp token mới và khởi động service process mới.
 
-## Verification layers
+## Các tầng xác minh
 
-Run source and integration checks:
+Chạy source và integration check:
 
-After activating the dedicated `.venv-bola-lab` environment above:
+Sau khi activate dedicated `.venv-bola-lab` environment ở trên:
 
 ```bash
 python -m compileall -q bola_lab bola_lab_app.py tests
@@ -187,10 +191,10 @@ python -m compileall -q bola_lab bola_lab_app.py tests
 python -W error::ResourceWarning -m unittest discover -s tests -v
 ```
 
-The integration suite starts a real local WSGI HTTP server and covers all S01-S12, owner controls, `/me`, invalid/expired tokens, S03 body leakage, masking, wrong-object truthfulness, sharing, S10 ambiguity, S11 UTF-8 byte equality, file modes, live-reset refusal, startup lock behavior, reset isolation, and attempts to fetch private/control paths over HTTP.
+Integration suite khởi động local WSGI HTTP server thật và cover S01–S12, owner control, `/me`, invalid/expired token, S03 body leakage, masking, wrong-object truthfulness, sharing, S10 ambiguity, S11 UTF-8 byte equality, file mode, live-reset refusal, startup lock, reset isolation và cố truy cập private/control path qua HTTP.
 
-Docker validation is intentionally separate: it is only reported as passed if Docker is available and the isolated compose service was built and run. The controller cannot initialize an unmounted named volume from the public container; deployers must provision the private volume state on the lab host first.
+Docker validation tách biệt: chỉ báo pass khi Docker sẵn sàng và isolated compose service đã build/chạy. Controller không thể initialize named volume chưa mount từ public container; deployer phải provision private volume state trước trên lab host.
 
-## Limits
+## Giới hạn
 
-This increment intentionally does not implement mutation/post-state cases, async flows, mixed-resource lists, redirects/login HTML, share revocation during a run, ownership transfers, cross-account caches, BFLA, or ZAP integration. No claim about a tool’s detection quality follows merely from the lab behaving as designed.
+Increment này không triển khai mutation/post-state case, async flow, mixed-resource list, redirect/login HTML, share revocation trong run, ownership transfer, cross-account cache, BFLA hoặc ZAP integration. Không thể kết luận về detection quality của tool chỉ vì lab hoạt động đúng thiết kế.

@@ -208,6 +208,40 @@ def reset_run(state_dir_text: str, scenario_code: str, token_ttl: int) -> None:
     initialize_run(str(state_dir), scenario_code, token_ttl)
 
 
+def _print_prepared_state_summary(state_dir_text: str, command: str) -> None:
+    state_dir = ensure_private_directory(state_dir_text)
+    action = "khởi tạo" if command == "init" else "đặt lại"
+    print(f"BOLA Lab đã được {action} thành công.")
+    if command == "reset":
+        print("Token bearer và marker private trước đó đã được thay thế; token cũ không còn hợp lệ.")
+    print()
+    print("Principal đã seed:")
+    for principal in PRINCIPALS:
+        print(f"  - {principal['username']} ({principal['role']})")
+    print()
+    print("Resource đã seed:")
+    for book_id, owner, title in BOOK_BLUEPRINTS:
+        print(f"  - {book_id} — owner: {owner} — {title}")
+    print()
+    print("Artifact private (chỉ operator; thư mục mode 0700, file mode 0600):")
+    artifact_details = (
+        ("database", "Database (principal, resource, ownership và share)"),
+        ("operator", "Cấu hình operator (pointer, danh sách identity/resource và policy)"),
+        ("tokens", "Bearer token đã cấp (chỉ đọc cục bộ và phân phối qua kênh bảo vệ)"),
+        ("manifest", "Manifest run (cấu hình run và signing secret)"),
+        ("answers", "Answer sheet evaluator (ground truth; không cung cấp cho tool)"),
+    )
+    for name, label in artifact_details:
+        print(f"  - {label}: {state_path(state_dir, name)}")
+    print()
+    print("Token, signing secret, marker và nội dung answer sheet không được in ra terminal.")
+    print("Bước tiếp theo:")
+    print(f"  1. Xác thực state: python -m bola_lab.controller --state-dir {state_dir} validate")
+    print("  2. Khởi động service với BOLA_LAB_STATE_DIR trỏ đến thư mục này.")
+    print("  3. Chỉ lấy token từ issued-tokens.json trên máy operator qua kênh bảo vệ.")
+    print("  4. Không publish, copy sang máy tool hoặc expose state directory qua HTTP.")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Private controller for the isolated BOLA lab")
     parser.add_argument("--state-dir", required=True, help="Private state directory (mode 0700)")
@@ -229,7 +263,10 @@ def main() -> int:
     except StateError as exc:
         print(f"Controller error: {exc}", file=sys.stderr)
         return 2
-    print("Private lab state prepared.")
+    if args.command == "validate":
+        print("Private lab state validated.")
+    else:
+        _print_prepared_state_summary(args.state_dir, args.command)
     return 0
 
 
